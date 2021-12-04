@@ -14,7 +14,7 @@ export default function AppMenu() {
     <Tabs >
         <Tab component={NavLink} to='/product' label="menu"  color="inherit"/>
         <Tab component={NavLink}  to='/employee'  label="cart" color="inherit"/>
-        <Tab component={NavLink}  to='/newpage' label="newpage"  color="inherit"/>
+        <Tab component={NavLink}  to='/newpage' label="order"  color="inherit"/>
         {authContext.status===STATUS.toSignOut?
         <Tab component={NavLink}  to='/' label="logout"  color="inherit"/>
         :
