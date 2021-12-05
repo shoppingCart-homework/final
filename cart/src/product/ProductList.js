@@ -1,12 +1,14 @@
 import ProductAdd from './ProductAdd'
-
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
 import React, {useState,useEffect,useContext} from 'react';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {Box,List,ListItemIcon,ListItemButton,ListItemText,Button, ListItem,CircularProgress,IconButton} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { initializeApp } from "firebase/app";
 import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc} from '@firebase/firestore';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '@mui/material/Input';
 import Dialog from '@mui/material/Dialog';
@@ -15,8 +17,8 @@ import AppMenu from '../ui/AppMenu';
 import {config} from '../settings/firebaseConfig';
 import Edit from '@mui/icons-material/Edit';
 import ImageUpload from '../ui/ImageUpload';
-
-
+import InfoIcon from '@mui/icons-material/Info';
+import Icon from '@mui/material/Icon';
 const firebaseApp = initializeApp(config);
    const db = getFirestore();
 
@@ -38,14 +40,14 @@ export default function ProductList() {
           //var citiesRef = collection(db, "product");
           //const q = await getDocs(query(citiesRef, where("price", ">=", 10000)));
           setIsLoading(true);
-          const querySnapshot = await getDocs(collection(db, "product"));
+          const querySnapshot = await getDocs(collection(db, "breakfast"));
     
           const temp = [];
          //q.foreach(doc) => ........
           querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-            temp.push({id:doc.id,desc:doc.data().desc, price:doc.data().price});
+            temp.push({id:doc.id,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage,bfclass:doc.data().bfclass});
           });
     
           console.log(temp);
@@ -57,7 +59,7 @@ export default function ProductList() {
     
       },[db]);
 
-      const unsub = onSnapshot(doc(db, "product", "SF"), (doc) => {
+      const unsub = onSnapshot(doc(db, "breakfast", "SF"), (doc) => {
         console.log("Current data: ", doc.data());
       });
 
@@ -78,23 +80,14 @@ export default function ProductList() {
     
   }
 
-  /*const q = query(collection(db, "product"));
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  const product = [];
-  querySnapshot.forEach((doc) => {
-    product.push({id:doc.id,desc:doc.data().desc, price:doc.data().price});
-  });
-  setProducts([...product]);
-  console.log("AAA");
-});
-  */
+
 const [deleted,setDeleted]=useState([]);
 
 const deleteData = async function(id){
 
   try{
     setIsLoading(true);
-    await deleteDoc(doc(db, "product", id));
+    await deleteDoc(doc(db, "breakfast", id));
     //console.log("deleted");
     setDeleted(deleted+1);
     setIsLoading(false);
@@ -105,16 +98,18 @@ const deleteData = async function(id){
 
 }
 
-const [product, setProduct] = useState({desc:"",price:0})
+const [product, setProduct] = useState(false)
 const handleClick = function(e){
   setProduct({...product,[e.target.name]:e.target.value})
 }
 const edit = async function(product){
   try{
     console.log(productid);
-    await setDoc(doc(db,"product",productid),{
-      desc:product.desc,
-      price:parseInt(product.price)
+    await setDoc(doc(db,"breakfast",productid),{
+      bfclass:product.bfclass,
+      bfprice:parseInt(product.bfprice),
+      bfimage:product.bfimage,
+      bfname:product.bfname
     });
     //console.log(setDoc.id);
   }
@@ -138,17 +133,32 @@ handleClickOpen();
   const ProductListComponent = function (){
     return (
       <List subheader=" " aria-label="product list">
-
-      {products.map((product, index) => 
-        <ListItem divider key={index}>
-          <ListItemText primary={product.desc} secondary={"NT$"+product.price}></ListItemText>
-          <IconButton edge="end" aria-label="edit" onClick={()=>editButton(product)}>
-          <EditIcon />
-          </IconButton> 
-          <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
-          <DeleteIcon />
-          </IconButton> 
-        </ListItem>)}
+      <ImageList sx={{ width: 360, height: 180 }} cols={2}>
+      
+      {products.map((item) => (
+        <ImageListItem key={item.bfimage}>
+          <img
+            src={`${item.bfimage}`}
+            srcSet={`${item.bfimage}`}
+            alt={item.bfname}
+            loading="lazy"
+          />
+          <ImageListItemBar
+            title={item.bfname}
+            subtitle={"NT$"+item.bfprice}
+            actionIcon={
+              <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                aria-label={`info about ${item.bfname}`}
+              >
+                <InfoIcon />
+              </IconButton>
+            }
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
+      
 
       </List>
     )
@@ -180,7 +190,7 @@ handleClickOpen();
       </List>
     
     <Divider />
-    <ImageUpload/>
+    
     </Box>
   );
   
