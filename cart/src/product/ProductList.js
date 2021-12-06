@@ -29,11 +29,7 @@ export default function ProductList() {
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
       };
-      const [products,setProducts]=useState([
-
-        
-    
-       ]);
+      const [products,setProducts]=useState([]);
       useEffect(()=>{
 
         async function readData() {
