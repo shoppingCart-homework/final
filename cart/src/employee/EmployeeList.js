@@ -5,11 +5,11 @@ import AppMenu from '../ui/AppMenu';
 export default function EmployeeList() {
 
   const [employees] = useState([
-    {id:"0", name:"Ben", department:"IT"},
-    {id:"1", name:"Rich", department:"Marketing"},
-    {id:"2", name:"Ruby", department:"Management"},
-    {id:"3", name:"Judy", department:"IT"},
-    {id:"4", name:"Rain", department:"IT"}
+    {id:"0", name:"A", department:"100"},
+    {id:"1", name:"B", department:"30"},
+    {id:"2", name:"C", department:"20"},
+    {id:"3", name:"D", department:"60"},
+    {id:"4", name:"E", department:"1000"}
    ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -28,11 +28,11 @@ export default function EmployeeList() {
         textAlign: 'left'
     }} >
     <AppMenu/>
-    <List subheader="Employee list" aria-label="employee list">
+    <List subheader="　購物車" aria-label="employee list">
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
-        <ListItemText primary={employee.name} secondary={"@"+employee.department}></ListItemText>
+        <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
 
       </ListItem>)}
 

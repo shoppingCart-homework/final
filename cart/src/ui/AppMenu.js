@@ -9,7 +9,7 @@ export default function AppMenu() {
   const authContext = useContext(AuthContext);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: 360 }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
     <Tabs >
         <Tab component={NavLink} to='/product' label="menu"  color="inherit"/>
