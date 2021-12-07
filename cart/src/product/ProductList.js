@@ -111,7 +111,6 @@ const edit = async function(product){
       bfimage:product.bfimage,
       bfname:product.bfname
     });
-    //console.log(setDoc.id);
   }
 
   catch(e){
@@ -122,11 +121,8 @@ const edit = async function(product){
 }
 const[productid,setProductid]=useState(0);
 const editButton =  function(product){
-  
-handleClickOpen();
-//setProduct({desc:"",price:300});
-//console.log(product.id);
- setProductid(product.id); 
+  handleClickOpen();
+  setProductid(product.id); 
 }
 
   const [isLoading, setIsLoading] = useState(false);
@@ -134,7 +130,6 @@ handleClickOpen();
     return (
       
       <List>
-        
       {products.map((product, index) => 
         <ListItem divider key={index}>
           <ImageList sx={{ width: 85, height: 85 }} cols={1}>
