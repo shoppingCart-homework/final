@@ -6,7 +6,7 @@ export default function Newpage() {
    
   const [employees] = useState([
 
-    {id:"0", name:"1", department:"IT"}
+    {id:"0", name:"哈哈", department:"100"}
 
    ]);
 
@@ -28,10 +28,10 @@ export default function Newpage() {
         textAlign: 'left'
     }} >
         <AppMenu/>
-    <List subheader="Employee list" aria-label="employee list">
+    <List subheader="　訂單" aria-label="employee list">
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
-        <ListItemText primary={employee.name} secondary={"@"+employee.department}></ListItemText>
+        <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
       </ListItem>)}
     </List>
     </Box>
