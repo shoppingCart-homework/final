@@ -23,6 +23,7 @@ import Edit from '@mui/icons-material/Edit';
 import ImageUpload from '../ui/ImageUpload';
 import InfoIcon from '@mui/icons-material/Info';
 import Icon from '@mui/material/Icon';
+import TextField from '@mui/material/TextField';
 const firebaseApp = initializeApp(config);
    const db = getFirestore();
 
@@ -98,7 +99,7 @@ const deleteData = async function(id){
 
 }
 
-const [product, setProduct] = useState(false)
+const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:""})
 const handleClick = function(e){
   setProduct({...product,[e.target.name]:e.target.value})
 }
@@ -106,7 +107,6 @@ const edit = async function(product){
   try{
     console.log(productid);
     await setDoc(doc(db,"breakfast",productid),{
-      
       bfprice:parseInt(product.bfprice),
       bfimage:product.bfimage,
       bfname:product.bfname
@@ -133,18 +133,20 @@ handleClickOpen();
   const ProductListComponent = function (){
     return (
       
-      <List subheader="Product List" aria-label="product list">
+      <List>
         
       {products.map((product, index) => 
         <ListItem divider key={index}>
-          <ImageList sx={{ width: 60, height: 60 }}>
-          <ImageListItem key={product.image}>
+          <ImageList sx={{ width: 85, height: 85 }} cols={1}>
+          <ImageListItem key={product.image} >
           <img
             src={`${product.bfimage}`}
             srcSet={`${product.bfimage}`}
+            
           />
         </ImageListItem>
         </ImageList>
+        
           <ListItemText primary={product.bfname} secondary={"NT$"+product.bfprice}></ListItemText>
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
@@ -167,7 +169,7 @@ handleClickOpen();
   
 
   return (
-<Box sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+<Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 <AppMenu/>
 
 {!isLoading ?
@@ -180,9 +182,9 @@ handleClickOpen();
 <DialogTitle id="alert-dialog-title">{"修改/刪除產品"}
 </DialogTitle>
 <DialogContent>
+產品描述:<Input type="text" name="bfname" value={product.bfname} onChange={handleClick} /><br/>
+產品價格:<Input type="number" name="bfprice" value={product.bfprice} onChange={handleClick}/><br/>
 
-產品描述:<Input type="text" name="name" value={product.bfname} onChange={handleClick}/><br/>
-產品價格:<Input type="number" name="price" value={product.bfprice} onChange={handleClick}/><br/>
 </DialogContent>
 <DialogActions>
 <Button variant="contained" color="primary" onClick={()=>edit(product)}>編輯</Button>
