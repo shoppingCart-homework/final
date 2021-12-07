@@ -12,6 +12,10 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '@mui/material/Input';
 import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import { getFirestore } from "firebase/firestore";
 import AppMenu from '../ui/AppMenu';
 import {config} from '../settings/firebaseConfig';
@@ -29,11 +33,7 @@ export default function ProductList() {
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
       };
-      const [products,setProducts]=useState([
-
-        
-    
-       ]);
+      const [products,setProducts]=useState([]);
       useEffect(()=>{
 
         async function readData() {
@@ -47,7 +47,7 @@ export default function ProductList() {
           querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-            temp.push({id:doc.id,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage,bfclass:doc.data().bfclass});
+            temp.push({id:doc.id,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage});
           });
     
           console.log(temp);
@@ -106,7 +106,7 @@ const edit = async function(product){
   try{
     console.log(productid);
     await setDoc(doc(db,"breakfast",productid),{
-      bfclass:product.bfclass,
+      
       bfprice:parseInt(product.bfprice),
       bfimage:product.bfimage,
       bfname:product.bfname
@@ -132,33 +132,33 @@ handleClickOpen();
   const [isLoading, setIsLoading] = useState(false);
   const ProductListComponent = function (){
     return (
-      <List subheader=" " aria-label="product list">
-      <ImageList sx={{ width: 360, height: 180 }} cols={2}>
       
-      {products.map((item) => (
-        <ImageListItem key={item.bfimage}>
+      <List subheader="Product List" aria-label="product list">
+        
+      {products.map((product, index) => 
+        <ListItem divider key={index}>
+          <ImageList sx={{ width: 60, height: 60 }}>
+          <ImageListItem key={product.image}>
           <img
-            src={`${item.bfimage}`}
-            srcSet={`${item.bfimage}`}
-            alt={item.bfname}
-            loading="lazy"
-          />
-          <ImageListItemBar
-            title={item.bfname}
-            subtitle={"NT$"+item.bfprice}
-            actionIcon={
-              <IconButton
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                aria-label={`info about ${item.bfname}`}
-              >
-                <InfoIcon />
-              </IconButton>
-            }
+            src={`${product.bfimage}`}
+            srcSet={`${product.bfimage}`}
           />
         </ImageListItem>
-      ))}
-    </ImageList>
-      
+        </ImageList>
+          <ListItemText primary={product.bfname} secondary={"NT$"+product.bfprice}></ListItemText>
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <IconButton edge="end" aria-label="edit" onClick={()=>editButton(product)}>
+          <EditIcon />
+          </IconButton> 
+          }
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
+          <DeleteOutlinedIcon />
+          </IconButton> 
+          }
+        </ListItem>)}
 
       </List>
     )
@@ -167,7 +167,7 @@ handleClickOpen();
   
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+<Box sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
 <AppMenu/>
 
 {!isLoading ?
@@ -177,11 +177,17 @@ handleClickOpen();
 }
 
 <Dialog open={open} onClose={handleClose}>
-產品描述:<Input type="text" name="desc" value={product.desc} onChange={handleClick}/><br/>
-產品價格:<Input type="number" name="price" value={product.price} onChange={handleClick}/><br/>
+<DialogTitle id="alert-dialog-title">{"修改/刪除產品"}
+</DialogTitle>
+<DialogContent>
+
+產品描述:<Input type="text" name="name" value={product.bfname} onChange={handleClick}/><br/>
+產品價格:<Input type="number" name="price" value={product.bfprice} onChange={handleClick}/><br/>
+</DialogContent>
+<DialogActions>
 <Button variant="contained" color="primary" onClick={()=>edit(product)}>編輯</Button>
 <Button onClick={handleClose}>關閉</Button>
-
+</DialogActions>
 </Dialog>
 
 

@@ -4,26 +4,26 @@ import { collection, addDoc,setDoc,doc,getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import {AuthContext, STATUS} from '../account/AuthContext';
-
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
   const authContext = useContext(AuthContext);
-  const [product, setProduct] = useState({desc:"",price:0})
-
-
+  const [product, setProduct] = useState(false)
 
   const handleClick = function(e){
-
     setProduct({...product,[e.target.name]:e.target.value})
-
   }
 
   const edit = async function(product){
     try{
-      await setDoc(doc(db,"product",product.id),{
-        desc:product.desc,
-        price:parseInt(product.price)
+      await setDoc(doc(db,"breakfast",product.id),{
+        bfprice:parseInt(product.bfprice),
+        bfimage:product.bfimage,
+        bfname:product.bfname
       });
       console.log(setDoc.id);
     }
@@ -36,9 +36,10 @@ export default function ProductAdd(props) {
 
   const update = async function(){
     try{
-      const docRef = await addDoc(collection(db,"product"),{
-        desc:product.desc,
-        price:parseInt(product.price)
+      const docRef = await addDoc(collection(db,"breakfast"),{
+        bfprice:parseInt(product.bfprice),
+        bfimage:product.bfimage,
+        bfname:product.bfname
         });
       console.log(docRef.id);
     }
@@ -71,11 +72,18 @@ export default function ProductAdd(props) {
       </Fab>
       }
 <Dialog open={open} onClose={handleClose}>
-
-產品描述:<Input type="text" name="desc" value={product.desc} onChange={handleClick}/><br/>
-產品價格:<Input type="number" name="price" value={product.price} onChange={handleClick}/><br/>
+<DialogTitle id="alert-dialog-title">{"新增產品"}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+產品名稱:<Input type="text" name="name" value={product.bfname} onChange={handleClick}/><br/>
+產品價格:<Input type="number" name="price" value={product.bfprice} onChange={handleClick}/><br/>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
 <Button variant="contained" color="primary" onClick={update}>新增</Button>
 <Button onClick={handleClose}>關閉</Button>
+</DialogActions>
 </Dialog>
     </div>
 
