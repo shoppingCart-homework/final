@@ -24,6 +24,7 @@ import ImageUpload from '../ui/ImageUpload';
 import InfoIcon from '@mui/icons-material/Info';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 const firebaseApp = initializeApp(config);
    const db = getFirestore();
 
@@ -152,6 +153,12 @@ const editButton =  function(product){
           <Box></Box>:
           <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
           <DeleteOutlinedIcon />
+          </IconButton> 
+          }
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <IconButton edge="end" aria-label="cart">
+          <AddShoppingCartIcon  />
           </IconButton> 
           }
         </ListItem>)}
