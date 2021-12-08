@@ -7,7 +7,7 @@ import {AuthContext, STATUS} from '../account/AuthContext';
 import {Box,List,ListItemIcon,ListItemButton,ListItemText,Button, ListItem,CircularProgress,IconButton} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { initializeApp } from "firebase/app";
-import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc} from '@firebase/firestore';
+import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc,updateDoc} from '@firebase/firestore';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '@mui/material/Input';
@@ -106,9 +106,8 @@ const handleClick = function(e){
 const edit = async function(product){
   try{
     console.log(productid);
-    await setDoc(doc(db,"breakfast",productid),{
+    await updateDoc(doc(db,"breakfast",productid),{
       bfprice:parseInt(product.bfprice),
-      bfimage:product.bfimage,
       bfname:product.bfname
     });
   }
