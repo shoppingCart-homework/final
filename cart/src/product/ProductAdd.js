@@ -8,16 +8,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import ImageUpload from '../ui/ImageUpload';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
   const authContext = useContext(AuthContext);
-  const [product, setProduct] = useState(false)
+  const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:""})
 
   const handleClick = function(e){
     setProduct({...product,[e.target.name]:e.target.value})
   }
-
+/*
   const edit = async function(product){
     try{
       await setDoc(doc(db,"breakfast",product.id),{
@@ -33,7 +34,7 @@ export default function ProductAdd(props) {
     }
     props.update(product);
   }
-
+*/
   const update = async function(){
     try{
       const docRef = await addDoc(collection(db,"breakfast"),{
@@ -76,8 +77,9 @@ export default function ProductAdd(props) {
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
-產品名稱:<Input type="text" name="name" value={product.bfname} onChange={handleClick}/><br/>
-產品價格:<Input type="number" name="price" value={product.bfprice} onChange={handleClick}/><br/>
+產品名稱:<Input type="text" name="bfname" value={product.bfname} onChange={handleClick}/><br/>
+產品價格:<Input type="number" name="bfprice" value={product.bfprice} onChange={handleClick}/><br/>
+<Input type="text" name="bfimage" value={product.bfimage} onChange={handleClick}/>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
@@ -86,8 +88,6 @@ export default function ProductAdd(props) {
 </DialogActions>
 </Dialog>
     </div>
-
   );
-
 }
 
