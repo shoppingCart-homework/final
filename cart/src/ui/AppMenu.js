@@ -12,13 +12,13 @@ export default function AppMenu() {
     <Box sx={{ width: 360 }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
     <Tabs >
-        <Tab component={NavLink} to='/product' label="menu"  color="inherit"/>
-        <Tab component={NavLink}  to='/employee'  label="cart" color="inherit"/>
-        <Tab component={NavLink}  to='/newpage' label="order"  color="inherit"/>
+        <Tab component={NavLink} to='/product' label="菜單"  color="inherit"/>
+        <Tab component={NavLink}  to='/employee'  label="購物車" color="inherit"/>
+        <Tab component={NavLink}  to='/newpage' label="訂單紀錄"  color="inherit"/>
         {authContext.status===STATUS.toSignOut?
-        <Tab component={NavLink}  to='/' label="logout"  color="inherit"/>
+        <Tab component={NavLink}  to='/' label="登出"  color="inherit"/>
         :
-        <Tab component={NavLink}  to='/' label="login"  color="inherit"/>
+        <Tab component={NavLink}  to='/' label="登入"  color="inherit"/>
       }
     </Tabs>
     </Box>
