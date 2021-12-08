@@ -54,7 +54,6 @@ export default function Newpage() {
     <DialogTitle id="alert-dialog-title">{"訂單詳情"}</DialogTitle>
         <DialogContent>
           <ListItemText primary={"品項：微笑世界"} secondary={"份數：5"}></ListItemText>
-          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>關閉</Button>

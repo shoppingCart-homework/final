@@ -18,6 +18,7 @@ export default function ProductAdd(props) {
   const handleClick = function(e){
     setProduct({...product,[e.target.name]:e.target.value})
   }
+  
 /*
   const edit = async function(product){
     try{
@@ -63,9 +64,7 @@ export default function ProductAdd(props) {
   };
 
   return (
-
     <div>
-
       {(authContext.status===STATUS.toSignIn)?
       <Box></Box>:
       <Fab color="primary" aria-label="Add" onClick={handleClickOpen}>
