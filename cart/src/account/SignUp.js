@@ -4,6 +4,10 @@ import { getApps, initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
 import {AuthContext, STATUS} from '../account/AuthContext';
+import { getFirestore, collection, addDoc } from "firebase/firestore"; 
+
+const firebaseApp = initializeApp(config);
+const db = getFirestore();
 
 export default function SignUp() {
   if (getApps().length===0) {
@@ -23,6 +27,14 @@ export default function SignUp() {
       if (res) {
         await updateProfile(auth.currentUser,{displayName: account.displayName});
         authContext.setStatus(STATUS.toSignIn);
+
+        const docRef = await addDoc(collection(db,"user"),{
+          userauth:parseInt("0"),
+          useremail:account.email,
+          username:account.name
+        });
+        console.log(docRef.id);
+
       }
       setMessage("");
     }
@@ -40,7 +52,7 @@ export default function SignUp() {
   return(
 
     <form>
-      <TextField type = "text" name = "displayName" value={account.displayName} 
+      <TextField type = "text" name = "name" value={account.name} 
         placeholder="姓名" label="姓名:" onChange={handleChange} /><br/>
       <TextField type = "email" name = "email" value={account.email} 
         placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
