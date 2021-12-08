@@ -9,13 +9,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function Newpage() {
    
   const [employees] = useState([
 
-    {id:"0", name:"笑死", department:"100"}
-
+    {id:"0", name:"訂購人姓名", department:"100"},
+    {id:"1", name:"訂購人姓名2", department:"400"}
    ]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -36,29 +41,26 @@ export default function Newpage() {
     return (
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <AppMenu/>
-    <List subheader="　訂單" aria-label="employee list">
+    <List aria-label="employee list"></List>
     {employees.map((employee, index) => 
-      <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
-        <ListItemText primary={employee.name} secondary={"NT$"+employee.department}>
-        </ListItemText>
-        <Stack spacing={0.5} direction="row">
-        <Button variant="contained" color="primary" edge="end" onClick={handleClickOpen}>查看訂單</Button>
-        <Button variant="contained" color="success" edge="end">完成訂單</Button>
-      </Stack>
-      </ListItem>
-      )}
-    </List>
-
+    <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id={index}
+        >
+          <Typography>{employee.name}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+          <ListItemText primary={"品項：微笑世界"} secondary={"份數："+employee.name}></ListItemText>
+          <ListItemText primary={"品項：微笑藥水"} secondary={"份數：10"}></ListItemText>
+          <Button variant="contained" color="success" edge="end">完成訂單</Button>
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    )}
     
-    <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-    <DialogTitle id="alert-dialog-title">{"訂單詳情"}</DialogTitle>
-        <DialogContent>
-          <ListItemText primary={"品項：微笑世界"} secondary={"份數：5"}></ListItemText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>關閉</Button>
-        </DialogActions>
-      </Dialog>
 
 
     </Box>

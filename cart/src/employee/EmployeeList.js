@@ -5,8 +5,8 @@ import {AuthContext, STATUS} from '../account/AuthContext';
 import {IconButton} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-
-
+import SendIcon from '@mui/icons-material/Send';
+import Button from '@mui/material/Button';
 export default function EmployeeList() {
   const authContext = useContext(AuthContext);
 
@@ -38,7 +38,7 @@ export default function EmployeeList() {
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
-        <ListItemText primary={employee.name} secondary={"NT$"+employee.department+"　　　數量："+employee.num}></ListItemText>
+        <ListItemText primary={employee.name} secondary={"NT$"+employee.department+"　　數量："+employee.num}></ListItemText>
 
         {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
@@ -56,7 +56,9 @@ export default function EmployeeList() {
 
 
     </List>
-
+    <Button variant="contained" endIcon={<SendIcon />}>
+        送出訂單
+      </Button>
     
 
     </Box>
