@@ -34,7 +34,7 @@ export default function EmployeeList() {
         textAlign: 'left'
     }} >
     <AppMenu/>
-    <List subheader="　購物車" aria-label="employee list">
+    <List aria-label="employee list">
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
