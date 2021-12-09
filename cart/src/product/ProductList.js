@@ -25,6 +25,13 @@ import InfoIcon from '@mui/icons-material/Info';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+
 const firebaseApp = initializeApp(config);
    const db = getFirestore();
 
@@ -49,7 +56,7 @@ export default function ProductList() {
           querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-            temp.push({id:doc.id,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage});
+            temp.push({id:doc.id,bfdesc:doc.data().bfdesc,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage});
           });
     
           console.log(temp);
@@ -100,7 +107,7 @@ const deleteData = async function(id){
 
 }
 
-const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:""})
+const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:"",bfdesc:""})
 const handleClick = function(e){
   setProduct({...product,[e.target.name]:e.target.value})
 }
@@ -109,7 +116,8 @@ const edit = async function(product){
     console.log(productid);
     await updateDoc(doc(db,"breakfast",productid),{
       bfprice:parseInt(product.bfprice),
-      bfname:product.bfname
+      bfname:product.bfname,
+      bfdesc:product.bfdesc
     });
   }
 
@@ -125,7 +133,38 @@ const editButton =  function(product){
   setProductid(product.id); 
 }
 
+
+ 
   const [isLoading, setIsLoading] = useState(false);
+  const ImList=function(){
+    return(
+      <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2}>
+        {products.map((product, index) => 
+        <Card>
+       <CardContent divider key={index}>
+        <CardMedia
+            component="img"
+            height="140"
+            image={product.bfimage}
+          />
+       <Typography gutterBottom variant="h5" component="div">
+         {product.bfname}
+       </Typography>
+       <Typography variant="body2" color="text.secondary">
+         {product.bfdesc}<br/>
+         {"NT$"+product.bfprice}
+       </Typography>
+          <CardActions>
+            <Button variant="contained">加入購物車</Button>
+            <Button onClick={()=>editButton(product)} variant="contained">編輯</Button>
+            <Button onClick={()=>deleteData(product.id)} variant="contained">刪除</Button>
+          </CardActions>
+     </CardContent>
+     </Card>
+      )}
+      </Stack>
+    )
+  }
   const ProductListComponent = function (){
     return (
       
@@ -164,6 +203,8 @@ const editButton =  function(product){
         </ListItem>)}
 
       </List>
+      
+      
     )
 
   }
@@ -171,21 +212,24 @@ const editButton =  function(product){
 
   return (
 <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-<AppMenu/>
 
+<AppMenu/>
+<ImList/>
 {!isLoading ?
 <ProductListComponent/>
  :
 <CircularProgress />
+
 }
 
 <Dialog open={open} onClose={handleClose}>
-<DialogTitle id="alert-dialog-title">{"修改/刪除產品"}
+<DialogTitle id="alert-dialog-title">{"修改產品"}
 </DialogTitle>
 <DialogContent>
 產品描述:<Input type="text" name="bfname" value={product.bfname} onChange={handleClick} /><br/>
 產品價格:<Input type="number" name="bfprice" value={product.bfprice} onChange={handleClick}/><br/>
-
+產品敘述:
+<Input type = "text" name = "bfdesc" value={product.bfdesc} onChange={handleClick}/>
 </DialogContent>
 <DialogActions>
 <Button variant="contained" color="primary" onClick={()=>edit(product)}>編輯</Button>
@@ -194,7 +238,7 @@ const editButton =  function(product){
 </Dialog>
 
 
-      
+
 <ProductAdd update={insert}/>
 
     

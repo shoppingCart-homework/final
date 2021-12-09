@@ -15,7 +15,7 @@ const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
   const authContext = useContext(AuthContext);
-  const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:""})
+  const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:"",bfdesc:""})
 
   const handleClick = function(e){
     setProduct({...product,[e.target.name]:e.target.value})
@@ -26,7 +26,8 @@ export default function ProductAdd(props) {
       const docRef = await addDoc(collection(db,"breakfast"),{
         bfprice:parseInt(product.bfprice),
         bfimage:change(product.bfimage),
-        bfname:product.bfname
+        bfname:product.bfname,
+        bfdesc:product.bfdesc
         });
       console.log(docRef.id);
     }
@@ -56,7 +57,7 @@ export default function ProductAdd(props) {
     <div>
       {(authContext.status===STATUS.toSignIn)?
       <Box></Box>:
-      <Fab color="primary" aria-label="Add" onClick={handleClickOpen} >
+      <Fab color="primary" aria-label="Add" onClick={handleClickOpen}>
       +
       </Fab>
       }
@@ -67,6 +68,7 @@ export default function ProductAdd(props) {
 <DialogContentText id="alert-dialog-description">
 產品名稱:<Input type="text" name="bfname" value={product.bfname} onChange={handleClick}/><br/>
 產品價格:<Input type="number" name="bfprice" value={product.bfprice} onChange={handleClick}/><br/>
+產品敘述:<Input type="text" name="bfdesc" value={product.bfdesc} onChange={handleClick}/><br/>
 圖片檔名:<Input type="text" name="bfimage" value={product.bfimage} onChange={handleClick}/><br/>
 
 <FormHelperText id="outlined-weight-helper-text">請完整輸入檔名(例：微笑薯餅.jpg)</FormHelperText>

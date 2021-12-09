@@ -17,24 +17,24 @@ export default function AppMenu() {
       allowScrollButtonsMobile
       aria-label="scrollable force tabs example"
     >
-        <Tab component={NavLink} to='/product' label="菜單"  color="inherit"/>
+        <Tab component={NavLink} to='/product' label="MENU"  color="inherit"/>
         {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-          <Tab component={NavLink}  to='/employee'  label="購物車" color="inherit"/>
+          <Tab component={NavLink}  to='/employee'  label="cart" color="inherit"/>
         }
         {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-          <Tab component={NavLink}  to='/newpage' label="訂單紀錄"  color="inherit"/>
+          <Tab component={NavLink}  to='/newpage' label="Order"  color="inherit"/>
         }
         {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-          <Tab component={NavLink}  to='/complete' label="已完成訂單"  color="inherit"/>
+          <Tab component={NavLink}  to='/complete' label="Completed"  color="inherit"/>
         }
           
         {authContext.status===STATUS.toSignOut?
-        <Tab component={NavLink}  to='/' label="登出"  color="inherit"/>
+        <Tab component={NavLink}  to='/' label="logout"  color="inherit"/>
         :
-        <Tab component={NavLink}  to='/' label="登入"  color="inherit"/>
+        <Tab component={NavLink}  to='/' label="login"  color="inherit"/>
       }
     </Tabs>
     </Box>

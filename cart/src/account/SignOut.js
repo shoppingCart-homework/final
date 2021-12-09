@@ -49,7 +49,7 @@ if(user) {
       <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2}>
       <Alert severity="success">
         <AlertTitle><strong>登入成功</strong></AlertTitle>
-        目前使用帳號：{email}
+        使用帳號：{email}
       </Alert>
       </Stack>
       <Button variant="contained" color="primary" onClick={handleSubmit}>登出</Button>

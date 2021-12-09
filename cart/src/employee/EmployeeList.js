@@ -43,16 +43,22 @@ export default function EmployeeList() {
 
         <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
         
-        
-      <ExpandLessIcon/>
-      {employee.num}
-      <ExpandMoreIcon/>
-      <DeleteIcon/>
+        <IconButton edge="end">
+          <ExpandLessIcon/>
+        </IconButton> 
+        {employee.num}
+        <IconButton edge="end">
+          <ExpandMoreIcon/>
+        </IconButton> 
+        <IconButton edge="end">
+        <DeleteIcon/>
+        </IconButton> 
+      
       </ListItem>)}
 
 
     </List>
-    <Button variant="contained" endIcon={<SendIcon />}>
+    <Button variant="contained" endIcon={<SendIcon />} >
         送出訂單
       </Button>
     
