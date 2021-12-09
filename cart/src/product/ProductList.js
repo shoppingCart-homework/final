@@ -194,11 +194,9 @@ const editButton =  function(product){
 </Dialog>
 
 
-      <List subheader=" " component="nav" aria-label="main mailbox folders">
-        <ProductAdd update={insert}/>
-      </List>
-    
-    <Divider />
+      
+<ProductAdd update={insert}/>
+
     
     </Box>
   );

@@ -18,9 +18,19 @@ export default function AppMenu() {
       aria-label="scrollable force tabs example"
     >
         <Tab component={NavLink} to='/product' label="菜單"  color="inherit"/>
-        <Tab component={NavLink}  to='/employee'  label="購物車" color="inherit"/>
-        <Tab component={NavLink}  to='/newpage' label="訂單紀錄"  color="inherit"/>
-        <Tab component={NavLink}  to='/complete' label="已完成訂單"  color="inherit"/>
+        {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <Tab component={NavLink}  to='/employee'  label="購物車" color="inherit"/>
+        }
+        {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <Tab component={NavLink}  to='/newpage' label="訂單紀錄"  color="inherit"/>
+        }
+        {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
+          <Tab component={NavLink}  to='/complete' label="已完成訂單"  color="inherit"/>
+        }
+          
         {authContext.status===STATUS.toSignOut?
         <Tab component={NavLink}  to='/' label="登出"  color="inherit"/>
         :
