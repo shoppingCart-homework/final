@@ -46,62 +46,66 @@ if(user) {
   console.log("沒登入");
   // 使用者未登入
 }
-
-
-//試著寫一下（還沒debug）
+/*
+//試著寫一下（還沒寫完）
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
+const ctRef = db.collection('cart');
+const ctRef2 = await ctRef.where('ctstate', '==', 0).get();
+const ctRef = db.collection('cart');
+const ctRef2 = await ctRef.where('ctstate', '==', 0).get();
+const snapshot = await ctRef2.where('useremail','==',account.email).get();
 
-const cartAdd = async function(product){
+if (snapshot.empty) { 
+// 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
+  console.log('沒有待結帳的商品');
+  
+  const useremail = doc.data().useremail;
+  //搜尋一下最大id
+  const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
+  const maxid = doc.id
+  const cartid = parseInt(maxid) + 1; 
+  //新增cart裡的文件
+  await setDoc(doc(db, "cart", cartid), {
+  ctaddress: ,
+  ctstate: 0,
+  useremail: account.email
+  //新增ctcontent
+  await setDoc(doc(db, "ctcontent", product.bfname), {
+  bfname: product.bfname,
+  bfquantity: 1,
+  useremail: account.email
+  });
 
-  const ctRef = db.collection('cart'); //Unhandled Rejection (TypeError): db.collection is not a function
-  const ctRef2 = await ctRef.where('ctstate', '==', 0).get();
-  const snapshot = await ctRef2.where('useremail','==',email).get();
+  });
 
-  if (snapshot.empty) { 
-  // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
-    console.log('沒有待結帳的商品');
-    
-    const useremail = doc.data().useremail;
-    //搜尋一下最大id
-    const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
-    const maxid = doc.id
-    const cartid = parseInt(maxid) + 1; 
-    //新增cart裡的文件
-    await setDoc(doc(db, "cart", cartid), {
-    ctaddress: "",
-    ctstate: 0,
-    useremail: email,
-    ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
-    bfname: product.bfname,
-    bfquantity: 1,
-    useremail: email
-    })
+  return;
+}
+else{
+// 如果「有｣待結帳的商品：選定該cart，並加入content
+  const useremail = doc.data().useremail;
+  //搜尋一下最大id
+  const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
+  const maxid = doc.id
+  //新增cart裡的文件
+  await setDoc(doc(db, "cart", maxid), {
+  ctaddress: ,
+  ctstate: 0,
+  useremail: account.email
+  //新增ctcontent
+  await setDoc(doc(db, "ctcontent", product.bfname), {
+  bfname: product.bfname,
+  bfquantity: 1,
+  useremail: account.email
+  });
 
-    });
-    return;
-  }
-  else{
-  // 如果「有｣待結帳的商品：選定該cart，並加入content
-    const useremail = doc.data().useremail;
-    const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
-    const maxid = doc.id
-    await setDoc(doc(db, "cart", maxid), {
-    ctaddress:"",
-    ctstate: 0,
-    useremail: email,
-    ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
-    bfname: product.bfname,
-    bfquantity: 1,
-    useremail: email
-    })
+  });
 
-    });
-    return;
-  }
+  return;
 
 }
 
 
+*/
 
 export default function ProductList() {
     const authContext = useContext(AuthContext);
@@ -227,7 +231,7 @@ const editButton =  function(product){
           <CardActions>
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>cartAdd(product)} variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
