@@ -5,8 +5,8 @@ import { getApps, initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
 import { getFirestore, collection, addDoc } from "firebase/firestore"; 
-
-
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -44,7 +44,14 @@ export default function SignIn() {
   
 
   return(
-
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 0.5, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
     <form>
 
       <TextField type = "text" name = "email" value={account.email} 
@@ -52,10 +59,12 @@ export default function SignIn() {
       <TextField type = "password" name = "password" value={account.password}
         placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
       {message}<br/>
+      <Stack spacing={0.5} direction="row">
       <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
       <Button variant="contained" color="secondary" onClick={changeStatus}>註冊</Button>
+      </Stack>
     </form>
-
+    </Box>
     
 
   )

@@ -1,5 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {Button, TextField} from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {config} from '../settings/firebaseConfig';
@@ -50,7 +52,14 @@ export default function SignUp() {
   
 
   return(
-
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 0.5, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
     <form>
       <TextField type = "text" name = "name" value={account.name} 
         placeholder="姓名" label="姓名:" onChange={handleChange} /><br/>
@@ -59,10 +68,12 @@ export default function SignUp() {
       <TextField type = "password" name = "password" value={account.password}
         placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
       {message}<br/>
+      <Stack spacing={0.5} direction="row">
       <Button variant="contained" color="primary" onClick={handleSubmit}>註冊</Button>
       <Button variant="contained" color="secondary" onClick={changeStatus}>我要登入</Button>
+      </Stack>
     </form>
-
+    </Box>
     
 
   )

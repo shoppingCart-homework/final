@@ -233,11 +233,12 @@ const editButton =  function(product){
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>} color="primary">編輯</Button>
+            <Button style={{borderRadius:50}} onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>} color="primary" >編輯</Button>
+            
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary">刪除</Button>
+            <Button style={{borderRadius:50}} onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary" >刪除</Button>
           }
           </CardActions>
      
@@ -246,49 +247,7 @@ const editButton =  function(product){
       </Stack>
     )
   }
-  const ProductListComponent = function (){
-    return (
-      
-      <List>
-      {products.map((product, index) => 
-        <ListItem divider key={index}>
-          <ImageList sx={{ width: 85, height: 85 }} cols={1}>
-          <ImageListItem key={product.image} >
-          <img
-            src={`${product.bfimage}`}
-            srcSet={`${product.bfimage}`}
-            
-          />
-        </ImageListItem>
-        </ImageList>
-        
-          <ListItemText primary={product.bfname} secondary={"NT$"+product.bfprice}></ListItemText>
-          {(authContext.status===STATUS.toSignIn)?
-          <Box></Box>:
-          <IconButton edge="end" aria-label="edit" onClick={()=>editButton(product)}>
-          <EditIcon />
-          </IconButton> 
-          }
-          {(authContext.status===STATUS.toSignIn)?
-          <Box></Box>:
-          <IconButton edge="end" aria-label="delete" onClick={()=>deleteData(product.id)}>
-          <DeleteOutlinedIcon />
-          </IconButton> 
-          }
-          {(authContext.status===STATUS.toSignIn)?
-          <Box></Box>:
-          <IconButton edge="end" aria-label="cart">
-          <AddShoppingCartIcon  />
-          </IconButton> 
-          }
-        </ListItem>)}
-
-      </List>
-      
-      
-    )
-
-  }
+  
   
 
   return (
