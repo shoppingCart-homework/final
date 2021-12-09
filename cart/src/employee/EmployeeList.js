@@ -3,10 +3,13 @@ import { Box, List, ListItem, ListItemText} from '@mui/material';
 import AppMenu from '../ui/AppMenu';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {IconButton} from '@mui/material';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export default function EmployeeList() {
   const authContext = useContext(AuthContext);
 
@@ -38,20 +41,13 @@ export default function EmployeeList() {
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
-        <ListItemText primary={employee.name} secondary={"NT$"+employee.department+"　　數量："+employee.num}></ListItemText>
-
-        {(authContext.status===STATUS.toSignIn)?
-          <Box></Box>:
-          <IconButton edge="end" aria-label="edit">
-          <EditIcon />
-          </IconButton> 
-          }
-          {(authContext.status===STATUS.toSignIn)?
-          <Box></Box>:
-          <IconButton edge="end" aria-label="delete">
-          <DeleteOutlinedIcon />
-          </IconButton> 
-          }
+        <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
+        
+        
+      <ExpandLessIcon/>
+      {employee.num}
+      <ExpandMoreIcon/>
+      <DeleteIcon/>
       </ListItem>)}
 
 

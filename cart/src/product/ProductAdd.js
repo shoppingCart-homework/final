@@ -7,8 +7,10 @@ import {AuthContext, STATUS} from '../account/AuthContext';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
+import FormHelperText from '@mui/material/FormHelperText';
 import DialogContentText from '@mui/material/DialogContentText';
-import ImageUpload from '../ui/ImageUpload';
+import Upload from '../ui/Upload';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
@@ -19,28 +21,11 @@ export default function ProductAdd(props) {
     setProduct({...product,[e.target.name]:e.target.value})
   }
   
-/*
-  const edit = async function(product){
-    try{
-      await setDoc(doc(db,"breakfast",product.id),{
-        bfprice:parseInt(product.bfprice),
-        bfimage:product.bfimage,
-        bfname:product.bfname
-      });
-      console.log(setDoc.id);
-    }
-
-    catch(e){
-      console.log(e);
-    }
-    props.update(product);
-  }
-*/
   const update = async function(){
     try{
       const docRef = await addDoc(collection(db,"breakfast"),{
         bfprice:parseInt(product.bfprice),
-        bfimage:product.bfimage,
+        bfimage:change(product.bfimage),
         bfname:product.bfname
         });
       console.log(docRef.id);
@@ -51,8 +36,11 @@ export default function ProductAdd(props) {
     }
     props.update(product);
   }
+  function change(a)
+  {
+    return("https://firebasestorage.googleapis.com/v0/b/appcart-39b32.appspot.com/o/"+a+"?alt=media");
+  }
   
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -78,7 +66,10 @@ export default function ProductAdd(props) {
 <DialogContentText id="alert-dialog-description">
 產品名稱:<Input type="text" name="bfname" value={product.bfname} onChange={handleClick}/><br/>
 產品價格:<Input type="number" name="bfprice" value={product.bfprice} onChange={handleClick}/><br/>
-<Input type="text" name="bfimage" value={product.bfimage} onChange={handleClick}/>
+圖片檔名:<Input type="text" name="bfimage" value={product.bfimage} onChange={handleClick}/><br/>
+
+<FormHelperText id="outlined-weight-helper-text">請完整輸入檔名(例：微笑薯餅.jpg)</FormHelperText>
+<Upload/>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
