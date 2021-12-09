@@ -31,9 +31,78 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-
+import { getAuth} from "firebase/auth";
 const firebaseApp = initializeApp(config);
-   const db = getFirestore();
+const db = getFirestore();
+// 先拿帳號出來
+const auth = getAuth();
+const user = auth.currentUser;
+if(user) {
+  // 使用者已登入，可以取得資料
+  var email = user.email;
+  var uid = user.uid;
+  console.log(email, uid);
+} else {
+  // 使用者未登入
+}
+/*
+//試著寫一下（還沒寫完）
+// 收集表格：搜尋登入的email有沒有ctstate==0的購物車
+const ctRef = db.collection('cart');
+const ctRef2 = await ctRef.where('ctstate', '==', 0).get();
+const snapshot = await ctRef2.where('useremail','==',account.email).get();
+
+if (snapshot.empty) { 
+// 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
+  console.log('沒有待結帳的商品');
+  
+  const useremail = doc.data().useremail;
+  //搜尋一下最大id
+  const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
+  const maxid = doc.id
+  const cartid = parseInt(maxid) + 1; 
+  //新增cart裡的文件
+  await setDoc(doc(db, "cart", cartid), {
+  ctaddress: ,
+  ctstate: 0,
+  useremail: account.email
+  //新增ctcontent
+  await setDoc(doc(db, "ctcontent", product.bfname), {
+  bfname: product.bfname,
+  bfquantity: 1,
+  useremail: account.email
+  });
+
+  });
+
+  return;
+}
+else{
+// 如果「有｣待結帳的商品：選定該cart，並加入content
+  const useremail = doc.data().useremail;
+  //搜尋一下最大id
+  const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
+  const maxid = doc.id
+  //新增cart裡的文件
+  await setDoc(doc(db, "cart", maxid), {
+  ctaddress: ,
+  ctstate: 0,
+  useremail: account.email
+  //新增ctcontent
+  await setDoc(doc(db, "ctcontent", product.bfname), {
+  bfname: product.bfname,
+  bfquantity: 1,
+  useremail: account.email
+  });
+
+  });
+
+  return;
+
+}
+
+
+*/
 
 export default function ProductList() {
     const authContext = useContext(AuthContext);
