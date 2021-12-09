@@ -229,15 +229,15 @@ const editButton =  function(product){
           <CardActions>
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button variant="contained" startIcon={<ShoppingCartIcon/>}>加入購物車</Button>
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>}>編輯</Button>
+            <Button onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>} color="primary">編輯</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>}>刪除</Button>
+            <Button onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary">刪除</Button>
           }
           </CardActions>
      
@@ -295,9 +295,9 @@ const editButton =  function(product){
 <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
 <AppMenu/>
-<ImList/>
+
 {!isLoading ?
-<ProductListComponent/>
+<ImList/>
  :
 <CircularProgress />
 
