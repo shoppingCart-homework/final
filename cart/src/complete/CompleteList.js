@@ -19,8 +19,8 @@ export default function Newpage() {
    
   const [employees] = useState([
 
-    {id:"0", name:"訂購人姓名", department:"木星"},
-    {id:"1", name:"訂購人姓名2", department:"冥王星"}
+    {id:"0", name:"訂購人姓名3", department:"天王星"},
+    {id:"1", name:"訂購人姓名4", department:"海王星"}
    ]);
   const [buy]=useState([
     {stuff:"微笑世界",quantity:"5"},
@@ -55,14 +55,16 @@ export default function Newpage() {
         >
           <Typography>{employee.name}</Typography>
         </AccordionSummary>
+        
         <AccordionDetails>
-          <strong>地址：{employee.department}</strong>
+        <strong>地址：{employee.department}</strong>
           <Typography>
           {buy.map((buyy, index) => 
+            
             <ListItemText primary={"品項："+buyy.stuff} secondary={"份數："+buyy.quantity}></ListItemText>
           )}
           
-          <Button variant="contained" color="success" edge="end">完成訂單</Button>
+          <Button variant="contained" color="success" edge="end" disabled>已完成</Button>
           </Typography>
         </AccordionDetails>
       </Accordion>

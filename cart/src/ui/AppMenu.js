@@ -11,10 +11,16 @@ export default function AppMenu() {
   return (
     <Box sx={{ width: 360 }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-    <Tabs >
+    <Tabs 
+      variant="scrollable"
+      scrollButtons
+      allowScrollButtonsMobile
+      aria-label="scrollable force tabs example"
+    >
         <Tab component={NavLink} to='/product' label="菜單"  color="inherit"/>
         <Tab component={NavLink}  to='/employee'  label="購物車" color="inherit"/>
         <Tab component={NavLink}  to='/newpage' label="訂單紀錄"  color="inherit"/>
+        <Tab component={NavLink}  to='/complete' label="已完成訂單"  color="inherit"/>
         {authContext.status===STATUS.toSignOut?
         <Tab component={NavLink}  to='/' label="登出"  color="inherit"/>
         :
