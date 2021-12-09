@@ -5,12 +5,12 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import React, {useState,useEffect,useContext} from 'react';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {Box,List,ListItemIcon,ListItemButton,ListItemText,Button, ListItem,CircularProgress,IconButton} from '@mui/material';
-import Divider from '@mui/material/Divider';
 import { initializeApp } from "firebase/app";
 import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc,updateDoc} from '@firebase/firestore';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '@mui/material/Input';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,9 +19,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { getFirestore } from "firebase/firestore";
 import AppMenu from '../ui/AppMenu';
 import {config} from '../settings/firebaseConfig';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Edit from '@mui/icons-material/Edit';
 import ImageUpload from '../ui/ImageUpload';
-import InfoIcon from '@mui/icons-material/Info';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -227,15 +227,15 @@ const editButton =  function(product){
           <CardActions>
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button variant="contained">加入購物車</Button>
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>}>購物車</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>editButton(product)} variant="contained">編輯</Button>
+            <Button onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>}>編輯</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button onClick={()=>deleteData(product.id)} variant="contained">刪除</Button>
+            <Button onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>}>刪除</Button>
           }
           </CardActions>
      </CardContent>
