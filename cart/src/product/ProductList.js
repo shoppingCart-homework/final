@@ -211,12 +211,13 @@ const editButton =  function(product){
       <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2}>
         {products.map((product, index) => 
         <Card>
-       <CardContent divider key={index}>
-        <CardMedia
+          <CardMedia
             component="img"
             height="140"
             image={product.bfimage}
           />
+       <CardContent divider key={index}>
+        
        <Typography gutterBottom variant="h5" component="div">
          {product.bfname}
        </Typography>
@@ -224,10 +225,11 @@ const editButton =  function(product){
          {product.bfdesc}<br/>
          {"NT$"+product.bfprice}
        </Typography>
+       </CardContent>
           <CardActions>
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
-            <Button variant="contained" startIcon={<ShoppingCartIcon/>}>購物車</Button>
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>}>加入購物車</Button>
           }
           {(authContext.status===STATUS.toSignIn)?
           <Box></Box>:
@@ -238,7 +240,7 @@ const editButton =  function(product){
             <Button onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>}>刪除</Button>
           }
           </CardActions>
-     </CardContent>
+     
      </Card>
       )}
       </Stack>
