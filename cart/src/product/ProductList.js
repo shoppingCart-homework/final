@@ -155,9 +155,18 @@ const editButton =  function(product){
          {"NT$"+product.bfprice}
        </Typography>
           <CardActions>
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
             <Button variant="contained">加入購物車</Button>
+          }
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
             <Button onClick={()=>editButton(product)} variant="contained">編輯</Button>
+          }
+          {(authContext.status===STATUS.toSignIn)?
+          <Box></Box>:
             <Button onClick={()=>deleteData(product.id)} variant="contained">刪除</Button>
+          }
           </CardActions>
      </CardContent>
      </Card>
