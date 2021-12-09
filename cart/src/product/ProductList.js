@@ -43,6 +43,7 @@ if(user) {
   var uid = user.uid;
   console.log(email, uid);
 } else {
+  console.log("沒登入");
   // 使用者未登入
 }
 /*
