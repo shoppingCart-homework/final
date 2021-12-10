@@ -16,8 +16,8 @@ export default function EmployeeList() {
   const [employees] = useState([
     {id:"0", name:"A", department:"100",num:"1"},
     {id:"1", name:"B", department:"30",num:"1"},
-    {id:"2", name:"C", department:"20",num:"1"},
-    {id:"3", name:"D", department:"60",num:"1"},
+    {id:"2", name:"C", department:"20",num:"888"},
+    {id:"3", name:"D", department:"60",num:"100"},
     {id:"4", name:"E", department:"1000",num:"1"}
    ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -25,7 +25,8 @@ export default function EmployeeList() {
   const handleListItemClick = (index) => {  
     setSelectedIndex(index);
   };
-
+  var Sum=0;
+  
   
 
     return (
@@ -43,24 +44,23 @@ export default function EmployeeList() {
 
         <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
         
-        <IconButton edge="end">
-          <ExpandLessIcon/>
-        </IconButton> 
-        {employee.num}
-        <IconButton edge="end">
-          <ExpandMoreIcon/>
-        </IconButton> 
+        <button >-</button>
+        <input id="num" value={employee.num} size="1"></input>
+        <button >+</button>
         <IconButton edge="end">
         <DeleteIcon/>
         </IconButton> 
       
       </ListItem>)}
-
-
-    </List>
-    <Button variant="contained" endIcon={<SendIcon />} >
+      <ListItem>
+      <ListItemText>總計：</ListItemText>
+      <Button variant="contained" endIcon={<SendIcon />} >
         送出訂單
       </Button>
+      </ListItem>
+
+    </List>
+    
     
 
     </Box>
