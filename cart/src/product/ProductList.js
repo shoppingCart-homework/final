@@ -51,24 +51,19 @@ if(user) {
 
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
 const cartAdd = async function(bfname){
-
-  //const ctRef = await getDocs(collection(db,"cart")); 
-  const q = query(collection(db,"cart"),
-  where('ctstate', '==', 0),
-  where('useremail','==',email));
+  //Unhandled Rejection (FirebaseError): Function where() called with invalid data. Unsupported field value: undefined
+  const q = await query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",email));
   const snapshot = await getDocs(query(q) );
+  console.log("bfname:",bfname,",email:",email);
 
   if (snapshot.empty) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
-    console.log('沒有待結帳的商品');
-    
-    //const useremail = doc.data().useremail;
     //搜尋一下最大id
     const maxid = await getDocs(query(collection(db,"cart"),orderBy("desc"),limit(1)) );
     const cartid = parseInt(doc.id) + 1; 
     //新增cart裡的文件
     try{
-      const cartttRef = await addDoc(collection(db,"cart"),collection(db,"ctcontent",cartid),{
+      const cartttRef = await addDoc(collection(db,"cart",cartid),collection(db,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
         useremail: email
@@ -82,9 +77,9 @@ const cartAdd = async function(bfname){
   // 如果「有｣待結帳的商品：選定該cart，並加入content
     const maxid = await getDocs(query(collection(db,"cart"),orderBy("desc"),limit(1)) );
     const cartid = parseInt(doc.id); 
-    // Line87 錯誤訊息：Unhandled Rejection (TypeError): n.indexOf is not a function??
+    // 錯誤訊息：Unhandled Rejection (TypeError): n.indexOf is not a function??
     try{
-      const cartttRef = await addDoc(collection(db,"cart"),collection(db,"ctcontent",cartid),{
+      const cartttRef = await addDoc(collection(db,"cart",cartid),collection(db,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
         useremail: email
