@@ -215,16 +215,16 @@ const editButton =  function(product){
        </Typography>
        </CardContent>
           <CardActions>
-          {(authContext.status===STATUS.toSignIn)?
+          {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
             <Button onClick={()=>cartAdd(product.bfname)}  variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
           }
-          {(authContext.status===STATUS.toSignIn)?
+          {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
             <Button style={{borderRadius:50}} onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>} color="primary" >編輯</Button>
             
           }
-          {(authContext.status===STATUS.toSignIn)?
+          {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
             <Button style={{borderRadius:50}} onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary" >刪除</Button>
           }

@@ -7,6 +7,15 @@ import {config} from '../settings/firebaseConfig';
 import { getFirestore, collection, addDoc } from "firebase/firestore"; 
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import LoginIcon from '@mui/icons-material/Login';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -44,6 +53,7 @@ export default function SignIn() {
   
 
   return(
+    
     <Box
       component="form"
       sx={{
@@ -51,19 +61,31 @@ export default function SignIn() {
       }}
       noValidate
       autoComplete="off"
+      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
     >
-    <form>
-
-      <TextField type = "text" name = "email" value={account.email} 
-        placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
-      <TextField type = "password" name = "password" value={account.password}
-        placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
-      {message}<br/>
-      <Stack spacing={0.5} direction="row">
-      <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
-      <Button variant="contained" color="secondary" onClick={changeStatus}>註冊</Button>
-      </Stack>
-    </form>
+    <Card>
+      <CardContent>
+        <Typography>
+          <Box display="flex" justifyContent="center" alignItems="center" p={2} >
+            <Avatar>
+              <LoginIcon/>
+            </Avatar>
+          </Box>
+        </Typography>
+        <Typography variant="body2" align="center">
+        <form>
+        
+          <TextField type = "text" name = "email" value={account.email} 
+          placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
+          <TextField type = "password" name = "password" value={account.password}
+          placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
+          {message}<br/>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
+          <Button variant="contained" color="secondary" onClick={changeStatus}>註冊</Button>
+        </form>
+      </Typography>
+      </CardContent>
+    </Card>
     </Box>
     
 

@@ -4,7 +4,6 @@ import {NavLink} from 'react-router-dom';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {useState,useContext} from 'react';
 
-
 export default function AppMenu() {
   const authContext = useContext(AuthContext);
 
@@ -18,15 +17,15 @@ export default function AppMenu() {
       aria-label="scrollable force tabs example"
     >
         <Tab component={NavLink} to='/product' label="MENU"  color="inherit"/>
-        {(authContext.status===STATUS.toSignIn)?
+        {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
           <Tab component={NavLink}  to='/employee'  label="cart" color="inherit"/>
         }
-        {(authContext.status===STATUS.toSignIn)?
+        {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
           <Tab component={NavLink}  to='/newpage' label="Order"  color="inherit"/>
         }
-        {(authContext.status===STATUS.toSignIn)?
+        {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
           <Tab component={NavLink}  to='/complete' label="Completed"  color="inherit"/>
         }
