@@ -6,7 +6,7 @@ import React, {useState,useEffect,useContext} from 'react';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {Box,List,ListItemIcon,ListItemButton,ListItemText,Button, ListItem,CircularProgress,IconButton} from '@mui/material';
 import { initializeApp } from "firebase/app";
-import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc,updateDoc} from '@firebase/firestore';
+import { collection ,getDocs,doc,setDoc, onSnapshot,query, orderBy,where,deleteDoc,updateDoc,limit} from '@firebase/firestore';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '@mui/material/Input';
@@ -32,6 +32,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { getAuth} from "firebase/auth";
+
+
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 // 先拿帳號出來
@@ -47,53 +49,55 @@ if(user) {
   // 使用者未登入
 }
 
-
-//試著寫一下（還沒debug）
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
-
 const cartAdd = async function(product){
 
-  const ctRef = db.collection('cart'); //Unhandled Rejection (TypeError): db.collection is not a function
-  const ctRef2 = await ctRef.where('ctstate', '==', 0).get();
-  const snapshot = await ctRef2.where('useremail','==',email).get();
+  //const ctRef = await getDocs(collection(db,"cart")); 
+  //錯誤訊息：Unhandled Rejection (FirebaseError): 
+  //Function where() called with invalid data. Unsupported field value: undefined
+  const snapshot = await getDocs(query(collection(db,"cart"),
+                         where('ctstate', '==', 0),
+                         where('useremail','==',email)) );
 
   if (snapshot.empty) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
     console.log('沒有待結帳的商品');
     
-    const useremail = doc.data().useremail;
+    //const useremail = doc.data().useremail;
     //搜尋一下最大id
-    const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
-    const maxid = doc.id
-    const cartid = parseInt(maxid) + 1; 
+    const maxid = await getDocs(query(collection(db,"cart"),orderBy("desc"),limit(1)) );
+    const cartid = parseInt(doc.id) + 1; 
     //新增cart裡的文件
     await setDoc(doc(db, "cart", cartid), {
     ctaddress: "",
     ctstate: 0,
     useremail: email,
-    ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
+    /*ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
     bfname: product.bfname,
     bfquantity: 1,
     useremail: email
     })
+    
+    */
 
     });
     return;
   }
   else{
   // 如果「有｣待結帳的商品：選定該cart，並加入content
-    const useremail = doc.data().useremail;
-    const cartRes = await ctRef.orderBy().limit(1).get(); //依照id大小排序
-    const maxid = doc.id
-    await setDoc(doc(db, "cart", maxid), {
+    const maxid = await getDocs(query(collection(db,"cart"),orderBy("desc"),limit(1)) );
+    const cartid = parseInt(doc.id); 
+    // 錯誤訊息：Unhandled Rejection (TypeError): n.indexOf is not a function↓（好像是因為ctcontent不是這樣加）
+    await setDoc(doc(db, "cart", cartid), {
     ctaddress:"",
     ctstate: 0,
     useremail: email,
-    ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
+    /*ctcontent:await setDoc(doc(db, "ctcontent", product.bfname), {
     bfname: product.bfname,
     bfquantity: 1,
     useremail: email
-    })
+    })*/
+    //到底怎麼用程式碼新增集合啊（？）
 
     });
     return;
