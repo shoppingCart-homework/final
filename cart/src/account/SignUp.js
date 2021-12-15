@@ -15,6 +15,10 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2'
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -28,6 +32,7 @@ export default function SignUp() {
   const handleChange = function(e){
     setAccount({...account,[e.target.name]:e.target.value})
   }
+
   const handleSubmit = async function(){
 
     try {
@@ -49,7 +54,7 @@ export default function SignUp() {
     }
 
     catch(error){
-      setMessage(""+error);
+      alert("輸入錯誤或帳號已被註冊。");
     }
 
   }
@@ -67,6 +72,21 @@ export default function SignUp() {
               : 'rgb(255 132 132 / 25%)',
         }}
       />
+    );
+  }
+  
+  function ImageAvatars() {
+    return (
+      
+      <Box
+      sx={{
+        width: '100%', maxWidth: 360, bgcolor: 'background.paper' 
+      }}
+      alignItems="center"
+      >
+      <RedBar/>
+      <Alert severity="error">輸入錯誤或帳號已被註冊。</Alert>
+      </Box>
     );
   }
 

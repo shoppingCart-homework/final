@@ -19,8 +19,8 @@ export default function Newpage() {
    
   const [employees] = useState([
 
-    {id:"0", name:"訂購人姓名3", department:"天王星"},
-    {id:"1", name:"訂購人姓名4", department:"海王星"}
+    {id:"0", name:"akabareiji@yahoo.com.tw", department:"天王星"},
+    {id:"1", name:"123@gmail.com", department:"海王星"}
    ]);
   const [buy]=useState([
     {stuff:"微笑世界",quantity:"5"},

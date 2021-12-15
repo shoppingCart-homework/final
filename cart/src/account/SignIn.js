@@ -15,7 +15,9 @@ import Typography from '@mui/material/Typography';
 import LoginIcon from '@mui/icons-material/Login';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
+
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -29,6 +31,7 @@ export default function SignIn() {
   const handleChange = function(e){
     setAccount({...account,[e.target.name]:e.target.value})
   }
+  
   const handleSubmit = async function(){
 
     try {
@@ -38,13 +41,12 @@ export default function SignIn() {
         // 登入
         authContext.setStatus(STATUS.toSignOut);
         // 新增資料
-        
       }
       setMessage("");
     }
 
     catch(error){
-      setMessage("榊乙己!你又吸毒了!多...多桑的娛樂怎麼能算吸");
+      setMessage("帳號或密碼輸入錯誤。");
     }
   }
   const changeStatus = function(){
@@ -61,6 +63,12 @@ export default function SignIn() {
               : 'rgb(255 132 132 / 25%)',
         }}
       />
+    );
+  }
+
+  function Error(){
+    return(
+      <DoDisturbOnIcon/>
     );
   }
   
