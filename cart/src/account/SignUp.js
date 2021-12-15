@@ -50,14 +50,24 @@ export default function SignUp() {
         console.log(docRef.id);
 
       }
-      setMessage("");
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '註冊成功，可以登入了。',
+        confirmButtonText:"確定",
+        
+      })
     }
 
     catch(error){
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: '輸入錯誤或帳號已被註冊。',
+        text: '輸入錯誤或已經註冊過了。',
+        confirmButtonText:"關閉",
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonText:"關閉"
       })
     }
 
@@ -125,8 +135,8 @@ export default function SignUp() {
         placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
       {message}<br/>
       
-      <Button variant="contained" color="primary" onClick={handleSubmit}>註冊</Button>
-      <Button variant="contained" color="secondary" onClick={changeStatus}>我要登入</Button>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>註冊</Button><br/>
+      已經有帳號了？<Button  color="secondary" onClick={changeStatus}>登入</Button>
       
     </form>
     </Typography>

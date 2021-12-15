@@ -102,9 +102,9 @@ export default function SignIn() {
           <TextField type = "password" name = "password" value={account.password}
           placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
           {message}<br/>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button><br/>
           
-          <Button variant="contained" color="secondary" onClick={changeStatus}>註冊</Button>
+          還沒有帳號？<Button color="secondary" onClick={changeStatus}>註冊</Button>
         </form>
       </Typography>
       </CardContent>
