@@ -32,6 +32,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { getAuth} from "firebase/auth";
+import Swal from 'sweetalert2';
 
 
 
@@ -57,7 +58,6 @@ if(user) {
 
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
 const cartAdd = async function(bfname){
-  //Unhandled Rejection (FirebaseError): Function where() called with invalid data. Unsupported field value: undefined
   console.log(user);
   const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
   const snapshot = await getDocs(query(q) );
@@ -97,6 +97,13 @@ const cartAdd = async function(bfname){
         useremail: email
         });
         console.log(cartttRef.id);
+
+        Swal.fire({
+          icon: 'success',
+          title: '已加入購物車！',
+          text: '請至您的購物車內設定數量'
+        })
+
       }catch(e){
         console.log(e);
       }
@@ -125,6 +132,13 @@ const cartAdd = async function(bfname){
         useremail: email
         });
         console.log(cartttRef.id);
+
+        Swal.fire({
+          icon: 'success',
+          title: '已加入購物車！',
+          text: '請至您的購物車內設定數量'
+        })
+
       }catch(e){
         console.log(e);
       }
