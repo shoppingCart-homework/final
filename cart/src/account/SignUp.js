@@ -7,7 +7,14 @@ import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/
 import {config} from '../settings/firebaseConfig';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import { getFirestore, collection, addDoc } from "firebase/firestore"; 
-
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -49,30 +56,58 @@ export default function SignUp() {
   const changeStatus = function(){
     authContext.setStatus(STATUS.toSignIn);
   }
-  
+  function RedBar() {
+    return (
+      <Box
+        sx={{
+          height: 5,
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? 'rgba(255, 255, 255, 0.1)'
+              : 'rgb(255 132 132 / 25%)',
+        }}
+      />
+    );
+  }
 
   return(
     <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 0.5, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
+    component="form"
+    sx={{
+      '& .MuiTextField-root': { m: 0.5, width: '25ch' },
+    }}
+    noValidate
+    autoComplete="off"
+    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
     >
+      <Card>
+      <CardContent>
+        <Typography>
+        <Box display="flex" justifyContent="center" alignItems="center" p={2} >
+            <Avatar>
+              <PersonAddAlt1Icon/>
+            </Avatar>
+          </Box>
+        </Typography>
+      <Typography variant="body2" align="center">
     <form>
       <TextField type = "text" name = "name" value={account.name} 
         placeholder="姓名" label="姓名:" onChange={handleChange} /><br/>
+        <RedBar/>
       <TextField type = "email" name = "email" value={account.email} 
         placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
+        <RedBar/>
       <TextField type = "password" name = "password" value={account.password}
         placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
       {message}<br/>
-      <Stack spacing={0.5} direction="row">
+      
       <Button variant="contained" color="primary" onClick={handleSubmit}>註冊</Button>
       <Button variant="contained" color="secondary" onClick={changeStatus}>我要登入</Button>
-      </Stack>
+      
     </form>
+    </Typography>
+    </CardContent>
+    </Card>
     </Box>
     
 

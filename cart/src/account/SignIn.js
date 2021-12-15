@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import LoginIcon from '@mui/icons-material/Login';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -44,11 +44,24 @@ export default function SignIn() {
     }
 
     catch(error){
-      setMessage(""+error);
+      setMessage("榊乙己!你又吸毒了!多...多桑的娛樂怎麼能算吸");
     }
   }
   const changeStatus = function(){
     authContext.setStatus(STATUS.toSignUp);
+  }
+  function RedBar() {
+    return (
+      <Box
+        sx={{
+          height: 5,
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? 'rgba(255, 255, 255, 0.1)'
+              : 'rgb(255 132 132 / 25%)',
+        }}
+      />
+    );
   }
   
 
@@ -77,10 +90,12 @@ export default function SignIn() {
         
           <TextField type = "text" name = "email" value={account.email} 
           placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete="email"/><br/>
+          <RedBar/>
           <TextField type = "password" name = "password" value={account.password}
           placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete="current-password"/><br/>
           {message}<br/>
           <Button variant="contained" color="primary" onClick={handleSubmit}>登入</Button>
+          
           <Button variant="contained" color="secondary" onClick={changeStatus}>註冊</Button>
         </form>
       </Typography>
