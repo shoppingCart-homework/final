@@ -64,31 +64,31 @@ const cartAdd = async function(bfname){
   console.log("db_line64:"+db);
   console.log("bfname:",bfname,",email:",user.email);
   
-  if (snapshot.empty==true) { 
+  if (snapshot.empty==false) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
-    //搜尋一下最大id
-    const maxid = await getDocs(query(collection(db,"cart"),
-                                      where("useremail","==",user.email),
-                                      orderBy('id','desc'),limit(1)) );
+    //抓一下最大id
+    const querySnapshot = await getDocs(collection(db,"cart"));
+    console.log("querySnapshot:"+querySnapshot);
     let docId=0;
     let docRef=0;
-    maxid.forEach((doc)=>{docId = doc.id;
-                          docRef = doc});
-    console.log(docId);
-    /*console.log("db_line70:"+db);
-    const c = await collection(db,"cart");
-    console.log("c:"+c);
-    const q = await query(c,limit(1));
-    console.log("q:"+q);
-    const maxid = await getDocs(q);
-    console.log("maxid:"+maxid);
-    const cartid = parseInt(doc.id) + 1;
-    console.log("cartid:"+cartid);*/
+
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        docId = doc.id;
+      });
     //新增cart裡的文件
+    console.log("docId:"+docId);
     const cartid = parseInt(docId) +1;
-    console.log("cartid"+cartid);
+    console.log("cartid:"+cartid);
     try{
-      //下面這是加ctcontent，上面還要新增cart文件
+      await setDoc(doc(db, "cart", cartid), {
+        ctaddress:"",
+        ctstate: 0,
+        useremail: email
+      });
+      //加ctcontent
+
+      
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
