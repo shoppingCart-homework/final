@@ -63,11 +63,19 @@ const cartAdd = async function(bfname){
   const snapshot = await getDocs(query(q) );
   console.log("db_line64:"+db);
   console.log("bfname:",bfname,",email:",user.email);
-  console.log("snapshot:"+snapshot);
-  if (snapshot.empty) { 
+  
+  if (snapshot.empty==true) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
     //搜尋一下最大id
-    console.log("db_line70:"+db);
+    const maxid = await getDocs(query(collection(db,"cart"),
+                                      where("useremail","==",user.email),
+                                      orderBy('id','desc'),limit(1)) );
+    let docId=0;
+    let docRef=0;
+    maxid.forEach((doc)=>{docId = doc.id;
+                          docRef = doc});
+    console.log(docId);
+    /*console.log("db_line70:"+db);
     const c = await collection(db,"cart");
     console.log("c:"+c);
     const q = await query(c,limit(1));
@@ -75,10 +83,13 @@ const cartAdd = async function(bfname){
     const maxid = await getDocs(q);
     console.log("maxid:"+maxid);
     const cartid = parseInt(doc.id) + 1;
-    console.log("cartid:"+cartid);
+    console.log("cartid:"+cartid);*/
     //新增cart裡的文件
+    const cartid = parseInt(docId) +1;
+    console.log("cartid"+cartid);
     try{
-      const cartttRef = await addDoc(collection(db,"cart",cartid),collection(db,"ctcontent"),{
+      //下面這是加ctcontent，上面還要新增cart文件
+      const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
         useremail: email
@@ -92,7 +103,9 @@ const cartAdd = async function(bfname){
   // 如果「有｣待結帳的商品：選定該cart，並加入content
     console.log("db_line93:"+db);
     console.log("useremail:"+user.email);
-    const maxid = await getDocs(query(collection(db,"cart"),where("useremail","==",user.email),orderBy('id','desc'),limit(1)) );
+    const maxid = await getDocs(query(collection(db,"cart"),
+                                      where("useremail","==",user.email),
+                                      orderBy('id','desc'),limit(1)) );
     let docRef=0;
     maxid.forEach((doc)=>{docRef = doc});
     //const cartid = parseInt(id); 
