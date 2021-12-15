@@ -59,7 +59,7 @@ if(user) {
 const cartAdd = async function(bfname){
   //Unhandled Rejection (FirebaseError): Function where() called with invalid data. Unsupported field value: undefined
   console.log(user);
-  const q = await query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
+  const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
   const snapshot = await getDocs(query(q) );
   console.log("db_line64:"+db);
   console.log("bfname:",bfname,",email:",user.email);
@@ -91,12 +91,11 @@ const cartAdd = async function(bfname){
   else{
   // 如果「有｣待結帳的商品：選定該cart，並加入content
     console.log("db_line93:"+db);
-    const maxid = await getDocs(query(collection(db,"cart"),limit(1)) );
+    console.log("useremail:"+user.email);
+    const maxid = await getDocs(query(collection(db,"cart"),where("useremail","==",user.email),orderBy('id','desc'),limit(1)) );
     let docRef=0;
     maxid.forEach((doc)=>{docRef = doc});
-    //console.log(id);
     //const cartid = parseInt(id); 
-    // 錯誤訊息：Unhandled Rejection (TypeError): n.indexOf is not a function??
     try{
       //console.log("cartid1:"+cartid);
       //const docRef = getDoc(collection(db,"cart"),id);
