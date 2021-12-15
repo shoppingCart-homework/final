@@ -35,7 +35,7 @@ import { getAuth} from "firebase/auth";
 
 
 const firebaseApp = initializeApp(config);
-
+const db = getFirestore();
 // 先拿帳號出來
 const auth = getAuth();
 const user = auth.currentUser;
