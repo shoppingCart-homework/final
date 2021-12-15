@@ -18,7 +18,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 

@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import FormHelperText from '@mui/material/FormHelperText';
 import DialogContentText from '@mui/material/DialogContentText';
 import Upload from '../ui/Upload';
+import Swal from 'sweetalert2';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
@@ -36,6 +37,11 @@ export default function ProductAdd(props) {
       console.log(e);
     }
     props.update(product);
+    Swal.fire({
+      icon: 'success',
+      title: '新增成功，請重新刷新頁面'
+    })
+    
   }
   function change(a)
   {

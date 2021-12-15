@@ -211,6 +211,10 @@ const deleteData = async function(id){
     //console.log("deleted");
     setDeleted(deleted+1);
     setIsLoading(false);
+    Swal.fire({
+      icon: 'success',
+      title: '刪除成功，請重新刷新頁面'
+    })
   }
   catch (error){
     console.log(error);
@@ -230,12 +234,15 @@ const edit = async function(product){
       bfname:product.bfname,
       bfdesc:product.bfdesc
     });
+    Swal.fire({
+      icon: 'success',
+      title: '編輯成功，請重新刷新頁面'
+    })
   }
 
   catch(e){
     console.log(e);
   }
- 
   
 }
 const[productid,setProductid]=useState(0);
