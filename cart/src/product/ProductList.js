@@ -32,7 +32,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { getAuth} from "firebase/auth";
-import Swal from 'sweetalert2';
 
 
 
@@ -58,6 +57,7 @@ if(user) {
 
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
 const cartAdd = async function(bfname){
+  //Unhandled Rejection (FirebaseError): Function where() called with invalid data. Unsupported field value: undefined
   console.log(user);
   const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
   const snapshot = await getDocs(query(q) );
@@ -66,44 +66,35 @@ const cartAdd = async function(bfname){
   
   if (snapshot.empty==true) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
-    //抓一下最大id
-    const querySnapshot = await getDocs(collection(db,"cart"));
-    console.log("querySnapshot:"+querySnapshot);
+    //搜尋一下最大id
+    const maxid = await getDocs(query(collection(db,"cart"),
+                                      where("useremail","==",user.email),
+                                      orderBy('id','desc'),limit(1)) );
     let docId=0;
     let docRef=0;
-
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        docId = doc.id;
-      });
+    maxid.forEach((doc)=>{docId = doc.id;
+                          docRef = doc});
+    console.log(docId);
+    /*console.log("db_line70:"+db);
+    const c = await collection(db,"cart");
+    console.log("c:"+c);
+    const q = await query(c,limit(1));
+    console.log("q:"+q);
+    const maxid = await getDocs(q);
+    console.log("maxid:"+maxid);
+    const cartid = parseInt(doc.id) + 1;
+    console.log("cartid:"+cartid);*/
     //新增cart裡的文件
-    console.log("docId:"+docId);
     const cartid = parseInt(docId) +1;
-    console.log("cartid:"+cartid);
-    const carid = cartid.toString();
-    console.log("Line84_carid:"+carid);
+    console.log("cartid"+cartid);
     try{
-      await setDoc(doc(db, "cart", carid), {
-        ctaddress:"",
-        ctstate: 0,
-        useremail: email
-      });
-      console.log("line89:"+cartid);
-      //加ctcontents
-        docRef = doc(db,"cart",carid );
+      //下面這是加ctcontent，上面還要新增cart文件
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
         useremail: email
         });
         console.log(cartttRef.id);
-
-        Swal.fire({
-          icon: 'success',
-          title: '已加入購物車！',
-          text: '請至您的購物車內設定數量'
-        })
-
       }catch(e){
         console.log(e);
       }
@@ -113,32 +104,22 @@ const cartAdd = async function(bfname){
     console.log("db_line93:"+db);
     console.log("useremail:"+user.email);
     const maxid = await getDocs(query(collection(db,"cart"),
-                                      where("useremail","==",user.email)) );
+                                      where("useremail","==",user.email),
+                                      orderBy('id','desc'),limit(1)) );
     let docRef=0;
-    let docId=0;
-    console.log(maxid);
-    maxid.forEach((doc)=>{
-      console.log(doc.id, " => ", doc.data());
-      docRef = doc;
-      docId = doc.id;
-    });
-    console.log(docId);
+    maxid.forEach((doc)=>{docRef = doc});
+    //const cartid = parseInt(id); 
     try{
-
-      docRef = doc(db,"cart",docId );
+      //console.log("cartid1:"+cartid);
+      //const docRef = getDoc(collection(db,"cart"),id);
+      //console.log("cartid2:"+id);
+      docRef = doc(db,"cart","1" );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
         useremail: email
         });
         console.log(cartttRef.id);
-
-        Swal.fire({
-          icon: 'success',
-          title: '已加入購物車！',
-          text: '請至您的購物車內設定數量'
-        })
-
       }catch(e){
         console.log(e);
       }
