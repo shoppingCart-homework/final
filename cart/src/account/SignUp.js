@@ -54,7 +54,11 @@ export default function SignUp() {
     }
 
     catch(error){
-      alert("輸入錯誤或帳號已被註冊。");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '輸入錯誤或帳號已被註冊。',
+      })
     }
 
   }
