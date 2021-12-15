@@ -17,7 +17,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
-
+import Swal from 'sweetalert2'
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 
@@ -46,7 +46,15 @@ export default function SignIn() {
     }
 
     catch(error){
-      setMessage("帳號或密碼輸入錯誤。");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '帳號或密碼輸入錯誤。',
+        confirmButtonText:"關閉",
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonText:"關閉"
+      })
     }
   }
   const changeStatus = function(){
@@ -66,11 +74,7 @@ export default function SignIn() {
     );
   }
 
-  function Error(){
-    return(
-      <DoDisturbOnIcon/>
-    );
-  }
+  
   
 
   return(
