@@ -64,7 +64,7 @@ const cartAdd = async function(bfname){
   console.log("db_line64:"+db);
   console.log("bfname:",bfname,",email:",user.email);
   
-  if (snapshot.empty==false) { 
+  if (snapshot.empty==true) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
     //抓一下最大id
     const querySnapshot = await getDocs(collection(db,"cart"));
@@ -80,15 +80,17 @@ const cartAdd = async function(bfname){
     console.log("docId:"+docId);
     const cartid = parseInt(docId) +1;
     console.log("cartid:"+cartid);
+    const carid = cartid.toString();
+    console.log("Line84_carid:"+carid);
     try{
-      await setDoc(doc(db, "cart", cartid), {
+      await setDoc(doc(db, "cart", carid), {
         ctaddress:"",
         ctstate: 0,
         useremail: email
       });
-      //加ctcontent
-
-      
+      console.log("line89:"+cartid);
+      //加ctcontents
+        docRef = doc(db,"cart",carid );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
@@ -104,16 +106,19 @@ const cartAdd = async function(bfname){
     console.log("db_line93:"+db);
     console.log("useremail:"+user.email);
     const maxid = await getDocs(query(collection(db,"cart"),
-                                      where("useremail","==",user.email),
-                                      orderBy('id','desc'),limit(1)) );
+                                      where("useremail","==",user.email)) );
     let docRef=0;
-    maxid.forEach((doc)=>{docRef = doc});
-    //const cartid = parseInt(id); 
+    let docId=0;
+    console.log(maxid);
+    maxid.forEach((doc)=>{
+      console.log(doc.id, " => ", doc.data());
+      docRef = doc;
+      docId = doc.id;
+    });
+    console.log(docId);
     try{
-      //console.log("cartid1:"+cartid);
-      //const docRef = getDoc(collection(db,"cart"),id);
-      //console.log("cartid2:"+id);
-      docRef = doc(db,"cart","1" );
+
+      docRef = doc(db,"cart",docId );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
         bfquantity: 1,
