@@ -15,6 +15,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore,collection ,getDocs,doc,setDoc,addDoc,
    onSnapshot,query, orderBy,where,deleteDoc,updateDoc,limit,getDoc} from '@firebase/firestore';
 import { getAuth} from "firebase/auth";
+import Swal from 'sweetalert2';
 
 export default function EmployeeList() {
   const firebaseApp = initializeApp(config);
@@ -45,7 +46,6 @@ export default function EmployeeList() {
     if(user) {
       // 使用者已登入，可以取得資料
       var email = user.email;
-      var uid = user.uid;
       console.log("email:"+email);
     } else {
       console.log("沒登入");
@@ -93,27 +93,38 @@ export default function EmployeeList() {
           setProducts([...temp]);
 
           }
-         /* 
-          const temp = [];
-         //q.foreach(doc) => ........
-          querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            temp.push({id:doc.id,bfdesc:doc.data().bfdesc,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage});
-          });
-    
-          console.log(temp);
-          setProducts([...temp]);
-          setIsLoading(false);
-
-          */
         }
     
         readData();
-    
       },[db]);
 
-  
+      const [deleted,setDeleted]=useState([]);
+      const deleteData = async function(id){
+
+        try{
+          const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
+          const snapshot = await getDocs(query(q) );
+          let docRef = 0;
+          let docId=0;
+          snapshot.forEach((doc)=>{
+            console.log(doc.id, " => ", doc.data());
+            docRef = doc;
+            docId = doc.id;
+          });
+          docRef = doc(db,"cart",docId );
+          await deleteDoc(doc(docRef, "ctcontent", id));
+          //console.log("deleted");
+          setDeleted(deleted+1);
+          Swal.fire({
+            icon: 'success',
+            title: '刪除成功，請重新整理頁面'
+          })
+        }
+        catch (error){
+          console.log(error);
+        }
+      
+      }
 
     return (
     <Box sx={{
@@ -132,9 +143,9 @@ export default function EmployeeList() {
         <ListItemText primary={employee.bfname} secondary={"NT$"+employee.bfprice}></ListItemText>
         
         <button >-</button>
-        <input id="num" value={employee.bfquantity} size="1"></input>
+        <input id="num" value={1} size="1"></input>
         <button >+</button>
-        <IconButton edge="end">
+        <IconButton edge="end" onClick={()=>deleteData(employee.id)}>
         <DeleteIcon/>
         </IconButton> 
       
