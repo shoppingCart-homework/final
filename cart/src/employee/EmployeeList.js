@@ -22,14 +22,6 @@ export default function EmployeeList() {
   const db = getFirestore();
   const authContext = useContext(AuthContext);
 
-  /*const [employees] = useState([
-    {id:"0", bfname:"A", department:"100",num:"1"},
-    {id:"1", bfname:"B", department:"30",num:"1"},
-    {id:"2", bfname:"C", department:"20",num:"888"},
-    {id:"3", bfname:"D", department:"60",num:"100"},
-    {id:"4", bfname:"E", department:"1000",num:"1"}
-   ]);*/
-  //const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (index) => {  
     setSelectedIndex(index);
@@ -51,6 +43,8 @@ export default function EmployeeList() {
       console.log("沒登入");
       // 使用者未登入
     }
+      
+      const [bfquantity, setCount] = useState(0);
 
       const [employees,setProducts]=useState([]);
       useEffect(()=>{
@@ -88,14 +82,18 @@ export default function EmployeeList() {
             temp.push({id:doc.id,
               bfname:doc.data().bfname, 
               bfprice:doc.data().bfprice,
-              bfquantity:doc.data().bfquantity});
+              bfquantity:doc.data().bfquantity,
+              });
           });
+          
           setProducts([...temp]);
+
 
           }
         }
     
         readData();
+
       },[db]);
 
       const [deleted,setDeleted]=useState([]);
@@ -142,9 +140,9 @@ export default function EmployeeList() {
 
         <ListItemText primary={employee.bfname} secondary={"NT$"+employee.bfprice}></ListItemText>
         
-        <button >-</button>
-        <input id="num" value={1} size="1"></input>
-        <button >+</button>
+        <button>-</button>
+        <input id="num" value={employee.bfquantity} size="1"></input>
+        <button>+</button>
         <IconButton edge="end" onClick={()=>deleteData(employee.id)}>
         <DeleteIcon/>
         </IconButton> 
