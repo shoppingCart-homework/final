@@ -102,7 +102,7 @@ const cartAdd = async function(bfname,bfprice){
         Swal.fire({
           icon: 'success',
           title: '已加入購物車！',
-          text: '請至您的購物車內設定數量'
+          text: '請至您的購物車內確認'
         })
 
       }catch(e){
@@ -138,7 +138,7 @@ const cartAdd = async function(bfname,bfprice){
         Swal.fire({
           icon: 'success',
           title: '已加入購物車！',
-          text: '請至您的購物車內設定數量'
+          text: '請至您的購物車內確認'
         })
 
       }catch(e){
