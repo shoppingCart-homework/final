@@ -155,7 +155,7 @@ const cartAdd = async function(bfname,bfprice){
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
       };
-      const [products,setProducts]=useState([]);
+    const [products,setProducts]=useState([]);
       useEffect(()=>{
 
         async function readData() {
@@ -180,7 +180,35 @@ const cartAdd = async function(bfname,bfprice){
         readData();
     
       },[db]);
+      const [userss,setUsersss]=useState([]);
+      useEffect(()=>{
 
+        async function readData() {
+          //var citiesRef = collection(db, "product");
+          //const q = await getDocs(query(citiesRef, where("price", ">=", 10000)));
+          setIsLoading(true);
+          var citiesRef = collection(db, "user");
+          const q = await getDocs(query(citiesRef, where("useremail", "==", user.email)));
+    
+          const tempU = [];
+         //q.foreach(doc) => ........
+          q.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            tempU.push({useremail:doc.data().useremail, userauth:doc.data().userauth,username:doc.data().username});
+          });
+    
+          console.log(tempU);
+          setUsersss([...tempU]);
+          setIsLoading(false);
+        }
+    
+        readData();
+    
+      },[db]);
+      {userss.map((usersa) =>
+        console.log(usersa.userauth)
+        )}
       const unsub = onSnapshot(doc(db, "breakfast", "SF"), (doc) => {
         console.log("Current data: ", doc.data());
       });
@@ -277,19 +305,28 @@ const editButton =  function(product){
        </Typography>
        </CardContent>
           <CardActions>
-          {(authContext.status!=STATUS.toSignOut)?
-          <Box></Box>:
+          <Box>
             <Button onClick={()=>cartAdd(product.bfname,product.bfprice)}  variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
-          }
-          {(authContext.status!=STATUS.toSignOut)?
+          </Box>
+          {userss.map((usersa) => 
+          <Box >
+          {(usersa.userauth!="1")?
           <Box></Box>:
             <Button style={{borderRadius:50}} onClick={()=>editButton(product)} variant="contained" startIcon={<Edit/>} color="primary" >編輯</Button>
             
           }
-          {(authContext.status!=STATUS.toSignOut)?
+          </Box>
+          )}
+          {userss.map((usersa) => 
+          <Box >
+          {(usersa.userauth!="1")?
           <Box></Box>:
-            <Button style={{borderRadius:50}} onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary" >刪除</Button>
+          <Button style={{borderRadius:50}} onClick={()=>deleteData(product.id)} variant="contained" startIcon={<DeleteIcon/>} color="primary" >刪除</Button>
+            
           }
+          </Box>
+          )}
+          
           </CardActions>
      
      </Card>
