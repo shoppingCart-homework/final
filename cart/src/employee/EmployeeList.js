@@ -10,23 +10,109 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {config} from '../settings/firebaseConfig';
+import { initializeApp } from "firebase/app";
+import { getFirestore,collection ,getDocs,doc,setDoc,addDoc,
+   onSnapshot,query, orderBy,where,deleteDoc,updateDoc,limit,getDoc} from '@firebase/firestore';
+import { getAuth} from "firebase/auth";
+
 export default function EmployeeList() {
+  const firebaseApp = initializeApp(config);
+  const db = getFirestore();
   const authContext = useContext(AuthContext);
 
-  const [employees] = useState([
-    {id:"0", name:"A", department:"100",num:"1"},
-    {id:"1", name:"B", department:"30",num:"1"},
-    {id:"2", name:"C", department:"20",num:"888"},
-    {id:"3", name:"D", department:"60",num:"100"},
-    {id:"4", name:"E", department:"1000",num:"1"}
-   ]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  /*const [employees] = useState([
+    {id:"0", bfname:"A", department:"100",num:"1"},
+    {id:"1", bfname:"B", department:"30",num:"1"},
+    {id:"2", bfname:"C", department:"20",num:"888"},
+    {id:"3", bfname:"D", department:"60",num:"100"},
+    {id:"4", bfname:"E", department:"1000",num:"1"}
+   ]);*/
+  //const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (index) => {  
     setSelectedIndex(index);
   };
   var Sum=0;
   
+  const[selectedIndex,setSelectedIndex]=React.useState(1);
+
+  //試寫
+
+      // 先拿帳號出來
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if(user) {
+      // 使用者已登入，可以取得資料
+      var email = user.email;
+      var uid = user.uid;
+      console.log("email:"+email);
+    } else {
+      console.log("沒登入");
+      // 使用者未登入
+    }
+
+      const [employees,setProducts]=useState([]);
+      useEffect(()=>{
+
+        async function readData() {
+          //var citiesRef = collection(db, "product");
+          //先找有沒有購物車
+          console.log(user);
+          const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
+          const snapshot = await getDocs(query(q) );
+          console.log("db_line64:"+db);
+          //console.log("bfname:",bfname,",email:",user.email);
+          if (snapshot.empty==true) {
+            console.log("購物車為空");
+          }else{
+            console.log("db_line69:"+db);
+            console.log("useremail:"+user.email);
+            let docRef=0;
+            let docId=0;
+            console.log(snapshot);
+            snapshot.forEach((doc)=>{
+              console.log(doc.id, " => ", doc.data());
+              docRef = doc;
+              docId = doc.id;
+            });
+            console.log(docId);
+
+            //抓ctcontent
+            docRef = doc(db,"cart",docId );
+            const querySnapshot = await getDocs(collection(docRef,"ctcontent"));
+
+            const temp = [];
+            querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+            temp.push({id:doc.id,
+              bfname:doc.data().bfname, 
+              bfprice:doc.data().bfprice,
+              bfquantity:doc.data().bfquantity});
+          });
+          setProducts([...temp]);
+
+          }
+         /* 
+          const temp = [];
+         //q.foreach(doc) => ........
+          querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            temp.push({id:doc.id,bfdesc:doc.data().bfdesc,bfname:doc.data().bfname, bfprice:doc.data().bfprice,bfimage:doc.data().bfimage});
+          });
+    
+          console.log(temp);
+          setProducts([...temp]);
+          setIsLoading(false);
+
+          */
+        }
+    
+        readData();
+    
+      },[db]);
+
   
 
     return (
@@ -38,14 +124,15 @@ export default function EmployeeList() {
         textAlign: 'left'
     }} >
     <AppMenu/>
+  
     <List aria-label="employee list">
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
-        <ListItemText primary={employee.name} secondary={"NT$"+employee.department}></ListItemText>
+        <ListItemText primary={employee.bfname} secondary={"NT$"+employee.bfprice}></ListItemText>
         
         <button >-</button>
-        <input id="num" value={employee.num} size="1"></input>
+        <input id="num" value={employee.bfquantity} size="1"></input>
         <button >+</button>
         <IconButton edge="end">
         <DeleteIcon/>

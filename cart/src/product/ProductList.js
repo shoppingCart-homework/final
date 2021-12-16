@@ -57,7 +57,7 @@ if(user) {
 }
 
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
-const cartAdd = async function(bfname){
+const cartAdd = async function(bfname,bfprice){
   console.log(user);
   const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
   const snapshot = await getDocs(query(q) );
@@ -93,6 +93,7 @@ const cartAdd = async function(bfname){
         docRef = doc(db,"cart",carid );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
+        bfprice:bfprice,
         bfquantity: 1,
         useremail: email
         });
@@ -128,6 +129,7 @@ const cartAdd = async function(bfname){
       docRef = doc(db,"cart",docId );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
         bfname: bfname,
+        bfprice:bfprice,
         bfquantity: 1,
         useremail: email
         });
@@ -277,7 +279,7 @@ const editButton =  function(product){
           <CardActions>
           {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
-            <Button onClick={()=>cartAdd(product.bfname)}  variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
+            <Button onClick={()=>cartAdd(product.bfname,product.bfprice)}  variant="contained" startIcon={<ShoppingCartIcon/>} color="secondary">加入購物車</Button>
           }
           {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
