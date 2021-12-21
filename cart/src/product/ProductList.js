@@ -58,37 +58,37 @@ if(user) {
 
 // 收集表格：搜尋登入的email有沒有ctstate==0的購物車
 const cartAdd = async function(bfname,bfprice){
-  console.log(user);
+  //console.log(user);
   const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
   const snapshot = await getDocs(query(q) );
-  console.log("db_line64:"+db);
-  console.log("bfname:",bfname,",email:",user.email);
+  //console.log("db_line64:"+db);
+  //console.log("bfname:",bfname,",email:",user.email);
   
   if (snapshot.empty==true) { 
   // 如果「沒有」待結帳的商品：最大cart_id++，並把商品加入該cart的ctcontent
     //抓一下最大id
     const querySnapshot = await getDocs(collection(db,"cart"));
-    console.log("querySnapshot:"+querySnapshot);
+    //console.log("querySnapshot:"+querySnapshot);
     let docId=0;
     let docRef=0;
 
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
         docId = doc.id;
       });
     //新增cart裡的文件
-    console.log("docId:"+docId);
+    //console.log("docId:"+docId);
     const cartid = parseInt(docId) +1;
-    console.log("cartid:"+cartid);
+    //console.log("cartid:"+cartid);
     const carid = cartid.toString();
-    console.log("Line84_carid:"+carid);
+    //console.log("Line84_carid:"+carid);
     try{
       await setDoc(doc(db, "cart", carid), {
         ctaddress:"",
         ctstate: 0,
         useremail: email
       });
-      console.log("line89:"+cartid);
+      //console.log("line89:"+cartid);
       //加ctcontents
         docRef = doc(db,"cart",carid );
       const cartttRef = await addDoc(collection(docRef,"ctcontent"),{
@@ -97,7 +97,7 @@ const cartAdd = async function(bfname,bfprice){
         bfquantity: 1,
         useremail: email
         });
-        console.log(cartttRef.id);
+        //console.log(cartttRef.id);
 
         Swal.fire({
           icon: 'success',
