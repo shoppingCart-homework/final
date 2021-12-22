@@ -22,9 +22,11 @@ export default function Homepage() {
   
 
     return (
+      
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <AppMenu/>
-    <marquee>⚠注意欸🈹！！！！這是首頁微笑薯餅，他很微笑，現在讓你看看😄🙂😉😜</marquee>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"></link>
+    <marquee><i class="fa fa-magnet" aria-hidden="true"></i><i class="fa fa-smile-o" aria-hidden="true"></i><i class="fa fa-thumbs-up" aria-hidden="true"></i><i class="fa fa-bomb" aria-hidden="true"></i><i class="fa fa-bullhorn" aria-hidden="true"></i><i class="fa fa-certificate" aria-hidden="true"></i><a href='https://store.line.me/stickershop/product/8014080/zh-Hant'>⚠注意欸🈹！！！！這是首頁微笑薯餅，他很微笑，現在讓你看看😄🙂😉😜</a></marquee>
     <img style={{ height: 360 }} src={Background} />
     
 
