@@ -275,6 +275,7 @@ const edit = async function(product){
   }
   
 }
+
 const[productid,setProductid]=useState(0);
 const editButton =  function(product){
   handleClickOpen();
@@ -286,7 +287,7 @@ const editButton =  function(product){
   const [isLoading, setIsLoading] = useState(false);
   const ImList=function(){
     return(
-      <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2}>
+      <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2} >
         {products.map((product, index) => 
         <Card>
           <CardMedia
