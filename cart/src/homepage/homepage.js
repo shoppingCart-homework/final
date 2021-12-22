@@ -27,7 +27,7 @@ export default function Homepage() {
       
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <AppMenu/>
-        <NoticeBar icon={<BellOutline />} content="注意！新產品：微笑薯餅即將上市！感謝你的注意！本販賣店商品皆由魔貨物車輛運送，一次可以載兩隻！" color='info' />
+        <NoticeBar icon={<BellOutline />} content="注意！新產品：微笑薯餅即將上市！感謝你的注意！" color='info' />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"></link>
     <img style={{ height: 360 }} src={Background} />
     
