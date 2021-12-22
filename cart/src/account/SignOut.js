@@ -8,6 +8,8 @@ import {ListItemText} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import AlertTitle from '@mui/material/AlertTitle';
+import { Result } from 'antd-mobile';
+import { SmileOutline } from 'antd-mobile-icons';
 //import { Box } from '@mui/system';
 
 export default function SignOut() {
@@ -46,16 +48,18 @@ if(user) {
   return(
     
     <form>
+      
       <Stack sx={{ width: '100%' ,maxWidth: 360}} spacing={2}>
-      <Alert severity="success">
-        <AlertTitle><strong>登入成功</strong></AlertTitle>
-        使用帳號：{email}
-      </Alert>
+      <Result
+          status='success'
+          title='登入成功'
+          description={"使用帳號："+email}
+        />
       </Stack>
       <Button variant="contained" color="primary" onClick={handleSubmit}>登出</Button>
       {message}<br/>
       
     </form>    
-
+    
   )
 }
