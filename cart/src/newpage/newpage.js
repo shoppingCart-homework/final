@@ -46,6 +46,7 @@ export default function Newpage() {
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <AppMenu/>
     <List aria-label="employee list"></List>
+    
     {employees.map((employee, index) => 
     <Accordion>
         <AccordionSummary

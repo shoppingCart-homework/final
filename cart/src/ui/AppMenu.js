@@ -15,7 +15,11 @@ export default function AppMenu() {
       scrollButtons
       allowScrollButtonsMobile
       aria-label="scrollable force tabs example"
-    >
+    >   
+        {(authContext.status!=STATUS.toSignOut)?
+          <Box></Box>:
+        <Tab component={NavLink} to='/homepage' label="HOME"  color="inherit"/>
+        }
         {(authContext.status!=STATUS.toSignOut)?
           <Box></Box>:
         <Tab component={NavLink} to='/product' label="MENU"  color="inherit"/>
