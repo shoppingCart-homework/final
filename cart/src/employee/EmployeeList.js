@@ -38,7 +38,7 @@ export default function EmployeeList() {
     if(user) {
       // 使用者已登入，可以取得資料
       var email = user.email;
-      console.log("email:"+email);
+      //console.log("email:"+email);
     } else {
       console.log("沒登入");
       // 使用者未登入
@@ -52,25 +52,25 @@ export default function EmployeeList() {
         async function readData() {
           //var citiesRef = collection(db, "product");
           //先找有沒有購物車
-          console.log(user);
+          //console.log(user);
           const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
           const snapshot = await getDocs(query(q) );
-          console.log("db_line64:"+db);
+          //console.log("db_line64:"+db);
           //console.log("bfname:",bfname,",email:",user.email);
           if (snapshot.empty==true) {
             console.log("購物車為空");
           }else{
-            console.log("db_line69:"+db);
-            console.log("useremail:"+user.email);
+            //console.log("db_line69:"+db);
+            //console.log("useremail:"+user.email);
             let docRef=0;
             let docId=0;
-            console.log(snapshot);
+            //console.log(snapshot);
             snapshot.forEach((doc)=>{
-              console.log(doc.id, " => ", doc.data());
+              //console.log(doc.id, " => ", doc.data());
               docRef = doc;
               docId = doc.id;
             });
-            console.log(docId);
+            //console.log(docId);
 
             //抓ctcontent
             docRef = doc(db,"cart",docId );
@@ -78,7 +78,7 @@ export default function EmployeeList() {
 
             const temp = [];
             querySnapshot.forEach((doc) => {
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             temp.push({id:doc.id,
               bfname:doc.data().bfname, 
               bfprice:doc.data().bfprice,
