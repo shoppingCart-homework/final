@@ -1,6 +1,6 @@
 import React, {useState,useEffect,useContext} from 'react';
 import {Input, Box, Dialog, Button, Fab} from '@mui/material';
-import { collection, addDoc,setDoc,doc,getFirestore } from "firebase/firestore";
+import { collection, addDoc,setDoc,doc,getFirestore,getDocs,query,where } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import {AuthContext, STATUS} from '../account/AuthContext';
@@ -12,10 +12,50 @@ import FormHelperText from '@mui/material/FormHelperText';
 import DialogContentText from '@mui/material/DialogContentText';
 import Upload from '../ui/Upload';
 import Swal from 'sweetalert2';
+import { getAuth} from "firebase/auth";
+import {List} from '@mui/material';
 const firebaseApp = initializeApp(config);
 const db = getFirestore();
 export default function ProductAdd(props) {
   const authContext = useContext(AuthContext);
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if(user) {
+    // 使用者已登入，可以取得資料
+    var email = user.email;
+    var uid = user.uid;
+    console.log("loginemail:"+email);
+  } else {
+    console.log("沒有登入");
+    // 使用者未登入
+  }
+  const [isLoading, setIsLoading] = useState(false);
+  const [userss,setUsersss]=useState([]);
+  useEffect(()=>{
+
+    async function readData() {
+      //var citiesRef = collection(db, "product");
+      //const q = await getDocs(query(citiesRef, where("price", ">=", 10000)));
+      setIsLoading(true);
+      var citiesRef = collection(db, "user");
+      const q = await getDocs(query(citiesRef, where("useremail", "==", user.email)));
+
+      const tempU = [];
+     //q.foreach(doc) => ........
+      q.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        tempU.push({useremail:doc.data().useremail, userauth:doc.data().userauth,username:doc.data().username});
+      });
+
+      console.log(tempU);
+      setUsersss([...tempU]);
+      setIsLoading(false);
+    }
+
+    readData();
+
+  },[db]);
   const [product, setProduct] = useState({bfname:"",bfprice:0,bfimage:"",bfdesc:""})
 
   const handleClick = function(e){
@@ -61,12 +101,19 @@ export default function ProductAdd(props) {
 
   return (
     <div>
-      {(authContext.status!=STATUS.toSignOut)?
-      <Box></Box>:
-      <Fab color="primary" aria-label="Add" onClick={handleClickOpen}>
+      {userss.map((usersa) => 
+          <Box>
+          {(usersa.userauth!="1")?
+          <Box></Box>:
+          <List>
+          <Fab color="primary" aria-label="Add" onClick={handleClickOpen}>
       +
       </Fab>
-      }
+      </List>
+          }
+          </Box>
+      )}
+      
 <Dialog open={open} onClose={handleClose}>
 <DialogTitle id="alert-dialog-title">{"新增產品"}
 </DialogTitle>
