@@ -111,7 +111,6 @@ const send = async function(){
                 bfname:doc.data().bfname, 
                 bfprice:doc.data().bfprice,
                 bfquantity:doc.data().bfquantity
-                
                 });
                 console.log(doc.data());
             });
@@ -263,9 +262,9 @@ const send = async function(){
         </IconButton> 
       </ListItem>)}
       <ListItem>
-      <ListItemText>總計：</ListItemText>
+      <ListItemText>總計：{total}</ListItemText>
       
-      {total}
+      
       
       <Button variant="contained" endIcon={<SendIcon />} onClick={handleClickOpen}  >
         送出訂單
