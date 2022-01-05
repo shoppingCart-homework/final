@@ -87,12 +87,14 @@ const send = async function(){
             
             console.log("querySnapshot:"+querySnapshot);
             let docId=0;
-            let docRef=0;
-        
+            let docII=0;
+            const temppp=[];
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, " => ", doc.data());
-                docId = doc.id;
+                temppp.push(parseInt(doc.id));
+                docII = Math.max(...temppp);
               });
+            docId = docII.toString();
             const cartid = parseInt(docId) +1;
             const carid = cartid.toString();
             await setDoc(doc(db, "order", carid), {
@@ -153,13 +155,21 @@ const send = async function(){
             console.log("db_line69:"+db);
             console.log("useremail:"+user.email);
             let docRef=0;
+            let docII=0;
             let docId=0;
             console.log(snapshot);
+            const temppp=[];
             snapshot.forEach((doc)=>{
+              temppp.push(parseInt(doc.id));
               console.log(doc.id, " => ", doc.data());
               docRef = doc;
-              docId = doc.id;
+              //換成數字
+              docII = Math.max(...temppp);
             });
+            
+            console.log(temppp);
+            console.log(docII);
+            docId = docII.toString();
             console.log(docRef);
             console.log(docId);
             setDocId(docId);

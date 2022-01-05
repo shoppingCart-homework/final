@@ -71,13 +71,13 @@ const cartAdd = async function(bfname,bfprice){
     //console.log("querySnapshot:"+querySnapshot);
     let docId=0;
     let docRef=0;
-
+    let docII = 0;
+    const temppp=[];
     querySnapshot.forEach((doc) => {
-        //console.log(doc.id, " => ", doc.data());
-        docId = doc.id;
+        temppp.push(parseInt(doc.id));
+        docII = Math.max(...temppp);
       });
-    //新增cart裡的文件
-    //console.log("docId:"+docId);
+      docId = docII.toString();
     const cartid = parseInt(docId) +1;
     //console.log("cartid:"+cartid);
     const carid = cartid.toString();
@@ -117,12 +117,16 @@ const cartAdd = async function(bfname,bfprice){
                                       where("useremail","==",user.email)) );
     let docRef=0;
     let docId=0;
+    let docII =0;
+    const temppp=[];
     console.log(maxid);
     maxid.forEach((doc)=>{
       console.log(doc.id, " => ", doc.data());
+      temppp.push(parseInt(doc.id));
       docRef = doc;
-      docId = doc.id;
+      docII = Math.max(...temppp);
     });
+    docId = docII.toString();
     console.log(docId);
     try{
 
