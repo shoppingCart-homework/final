@@ -7,7 +7,7 @@ import Newpage from './newpage/newpage';
 import CompleteList from './complete/CompleteList';
 import Main from './ui/Main';
 import {AuthContext, STATUS} from './account/AuthContext';
-
+import UserOrder from './userorder/UserOrder';
 export default function AppRouter(){
     const [status, setStatus] = useState(STATUS.toSignIn);
 return (
@@ -20,6 +20,7 @@ return (
         <Route path="/employee" element={<EmployeeList/>}/>
         <Route path="/newpage" element={<Newpage/>}/>
         <Route path="/complete" element={<CompleteList/>}/>
+        <Route path="/userorder" element={<UserOrder/>}/>
       </Routes>
     </Router>
   </AuthContext.Provider>

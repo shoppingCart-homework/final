@@ -16,7 +16,7 @@ import { getAuth} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import { getFirestore } from "firebase/firestore";
-
+import HistoryIcon from '@mui/icons-material/History';
 export default function AppMenu() {
   const [isLoading, setIsLoading] = useState(false);
   const [userss,setUsersss]=useState([]);
@@ -105,6 +105,10 @@ export default function AppMenu() {
           }
           </Box>
           )}
+        {(authContext.status!=STATUS.toSignOut)?
+          <Box></Box>:
+        <Tab component={NavLink} to='/userorder' label="History"  color="inherit" icon={<HistoryIcon/>} iconPosition="start"/>
+        }
         {authContext.status===STATUS.toSignOut?
         <Tab component={NavLink}  to='/' label="logout"  color="inherit" icon={<SentimentVeryDissatisfiedIcon/>} iconPosition="start"/>
         :

@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { Box, List, ListItem, ListItemText,CircularProgress} from '@mui/material';
 import AppMenu from '../ui/AppMenu';
+import { getAuth, signOut } from "firebase/auth";
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -18,12 +19,18 @@ import {collectionGroup, getFirestore,collection ,getDocs,doc,setDoc,addDoc, onS
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import Swal from 'sweetalert2';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import Alert from '@mui/material/Alert';
+import { Tag } from 'antd-mobile';
 export default function Newpage() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if(user) {
+    var email = user.email;
+    var uid = user.uid;
+    console.log(email, uid);
+  } 
   const [products,setProducts]=useState([]);
   const [string,setstring]=useState([]);
   const [productsr,setProductsr]=useState([]);
@@ -32,7 +39,7 @@ export default function Newpage() {
         async function readData() {
           setIsLoading(true);
           var citiesRef = collection(db, "order");
-          const q = await getDocs(query(citiesRef, where("state", "==", 0)));
+          const q = await getDocs(query(citiesRef, where("email", "==", email)));
           //temp裝未完成訂單user
           const temp = [];
           //tempu裝未完成訂單id
@@ -54,7 +61,7 @@ export default function Newpage() {
               });
               //setProductsr([...tempudetail]);
             temp.push({id:doc.id,address:doc.data().address,email:doc.data().email, state:doc.data().state,productsr:tempudetail});
-            setProducts((current)=>[...current,{id:doc.id,address:doc.data().address,email:doc.data().email, cost:doc.data().cost,state:doc.data().state,productsr:tempudetail} ])
+            setProducts((current)=>[...current,{id:doc.id,address:doc.data().address,email:doc.data().email,cost:doc.data().cost, state:doc.data().state,productsr:tempudetail} ])
           });
           console.log("未完成id:"+tempu);
           console.log(temp);
@@ -66,40 +73,6 @@ export default function Newpage() {
       },[db]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [open, setOpen] = React.useState(false);
-  const edit = async function(id){
-    try{
-      console.log(id);
-      await updateDoc(doc(db,"order",id),{
-        state:1
-      });
-      Swal.fire({
-        icon: 'success',
-        title: '完成訂單，請重整頁面'
-      })
-    }
-  
-    catch(e){
-      console.log(e);
-    }
-    
-  }
-  const edit2 = async function(id){
-    try{
-      console.log(id);
-      await updateDoc(doc(db,"order",id),{
-        state:2
-      });
-      Swal.fire({
-        icon: 'success',
-        title: '此訂單已取消，請重整頁面'
-      })
-    }
-  
-    catch(e){
-      console.log(e);
-    }
-    
-  }
   const[productid,setProductid]=useState(0);
   const handleListItemClick = (index) => {  
     setSelectedIndex(index);
@@ -110,6 +83,47 @@ export default function Newpage() {
   const handleClose = () => {
     setOpen(false);
   };
+  const Erro=function(name){
+    if (name=="1"){
+      return(
+        <Alert severity="success">訂單已送達</Alert>
+      );
+    }
+    else if(name=="2"){
+      return(
+        <Alert severity="error">訂單已被取消</Alert>
+      );
+    }
+    else{
+        return(
+            <Alert severity="info">處理訂單中</Alert>
+        );
+    }
+  }
+  const Erro2=function(name){
+    if (name=="2"){
+      return(
+        <Tag round color='danger'>
+          已取消
+        </Tag>
+      );
+    }
+    else if(name=="0"){
+        return(
+        <Tag round color='#2db7f5'>
+          處理中
+        </Tag>
+        );
+    }
+    else{
+        return(
+            <Tag round color='#87d068'>
+          已完成
+        </Tag>
+        );
+    }
+    
+  }
   const Imfor=function(){
     return(
       <Box>
@@ -120,21 +134,21 @@ export default function Newpage() {
           aria-controls="panel1a-content"
           id={index}
         >
-          <Typography>{product.email}</Typography>
+          <Typography>{product.email} {Erro2(product.state)}</Typography>
         </AccordionSummary>
+        {Erro(product.state)}
         <AccordionDetails>
-        <strong>地址：{product.address}</strong><br/>
+          <strong>地址：{product.address}</strong><br/>
           <strong>總金額：{product.cost}</strong>
           <Typography>
           {product.productsr.map((buyy, index) => 
             <ListItemText primary={"品項："+buyy.bfname} secondary={"份數："+buyy.bfquantity}></ListItemText>
+           
           )}
-          <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="success" edge="end" onClick={()=>edit(product.id)} startIcon={<CheckCircleOutlineIcon/>}>完成訂單</Button>
-          <Button variant="contained" color="error" edge="end" onClick={()=>edit2(product.id)} startIcon={<HighlightOffIcon/>}>取消訂單</Button>
-          </Stack>
-          </Typography>
           
+          
+          
+          </Typography>
         </AccordionDetails>
       </Accordion>
       
