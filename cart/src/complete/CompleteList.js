@@ -19,8 +19,6 @@ import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import Swal from 'sweetalert2';
 import Alert from '@mui/material/Alert';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Tag } from 'antd-mobile';
 export default function Newpage() {
   const firebaseApp = initializeApp(config);

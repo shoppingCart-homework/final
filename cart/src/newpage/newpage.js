@@ -18,6 +18,9 @@ import {collectionGroup, getFirestore,collection ,getDocs,doc,setDoc,addDoc, onS
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import Swal from 'sweetalert2';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 export default function Newpage() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -128,8 +131,8 @@ export default function Newpage() {
            
           )}
           <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="success" edge="end" onClick={()=>edit(product.id)}>完成訂單</Button>
-          <Button variant="contained" color="error" edge="end" onClick={()=>edit2(product.id)}>取消訂單</Button>
+          <Button variant="contained" color="success" edge="end" onClick={()=>edit(product.id)} startIcon={<CheckCircleOutlineIcon/>}>完成訂單</Button>
+          <Button variant="contained" color="error" edge="end" onClick={()=>edit2(product.id)} startIcon={<HighlightOffIcon/>}>取消訂單</Button>
           </Stack>
           </Typography>
           
