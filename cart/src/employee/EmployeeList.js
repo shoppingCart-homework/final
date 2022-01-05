@@ -1,5 +1,5 @@
 import React, {useState,useEffect,useContext} from 'react';
-import { Box, List, ListItem,Dialog,Input, ListItemText} from '@mui/material';
+import { Box, List, ListItem,Dialog,Input, ListItemText,CircularProgress} from '@mui/material';
 import AppMenu from '../ui/AppMenu';
 import {AuthContext, STATUS} from '../account/AuthContext';
 import {IconButton} from '@mui/material';
@@ -21,22 +21,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import FormHelperText from '@mui/material/FormHelperText';
-
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 export default function EmployeeList() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
   const authContext = useContext(AuthContext);
-
-
   const handleListItemClick = (index) => {  
     setSelectedIndex(index);
   };
   var Sum=0;
-  
   const[selectedIndex,setSelectedIndex]=React.useState(1);
-
   //試寫
-
       // 先拿帳號出來
     const auth = getAuth();
     const user = auth.currentUser;
@@ -48,11 +43,9 @@ export default function EmployeeList() {
       console.log("沒登入");
       // 使用者未登入
     }
-      
     const minus = async function(employee){
       console.log(employee.bfquantity);
       console.log(employee.id);
-      
       await setDoc(doc(db, "cart", DocId,"ctcontent",employee.id), {
         bfname:employee.bfname,
         bfprice: employee.bfprice,
@@ -60,13 +53,10 @@ export default function EmployeeList() {
         useremail:user.email
       });
       setTotal(parseInt(total)-parseInt(employee.bfprice))
-
   }
-
   const plus = async function(employee){
     console.log(employee.bfquantity);
     console.log(employee.id);
-    
     await setDoc(doc(db, "cart", DocId,"ctcontent",employee.id), {
       bfname:employee.bfname,
       bfprice: employee.bfprice,
@@ -75,16 +65,11 @@ export default function EmployeeList() {
     });
     setTotal(parseInt(total)+parseInt(employee.bfprice))
 }
-
 const send = async function(){
-  
-            
-            
             const auth = getAuth();
             const user = auth.currentUser;
             var acemail = user.email;
             const querySnapshot = await getDocs(collection(db,"order"));
-            
             console.log("querySnapshot:"+querySnapshot);
             let docId=0;
             let docII=0;
@@ -106,7 +91,6 @@ const send = async function(){
             //加訂單
             const docRef2 = doc(db,"cart",DocId );
             const querySnapshot2 = await getDocs(collection(docRef2,"ctcontent"));
-            
             //const querySnapshot2 = await getDocs(collection(db,"cart",docRef,"ctcontent"));
             querySnapshot2.forEach((doc) => {
               const cartttRef = addDoc(collection(db,"order",carid,"content"),{
@@ -120,27 +104,19 @@ const send = async function(){
             Swal.fire({
               icon: 'success',
               title: '訂單送出成功！',
-              
             })
-
           console.log(DocId)
           await deleteDoc(doc(db,"cart",DocId));
-            
             handleClose();
 
-  
-          
 }
 
       const [DocId, setDocId] = useState(0);
       const [quantity, setQuantity] = useState(0);
-
       const [total,setTotal]=useState(0);
       const [total2,setTotal2]=useState(0);
-
       const [employees,setProducts]=useState([]);
       useEffect(()=>{
-
         async function readData() {
           //var citiesRef = collection(db, "product");
           //先找有沒有購物車
@@ -177,7 +153,6 @@ const send = async function(){
             //抓ctcontent
             docRef = doc(db,"cart",docId );
             const querySnapshot = await getDocs(collection(docRef,"ctcontent"));
-
             const temp = [];
             querySnapshot.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
@@ -186,29 +161,19 @@ const send = async function(){
               bfprice:doc.data().bfprice,
               bfquantity:doc.data().bfquantity,
               });
-              
             setTotal((old_total)=>parseInt(old_total)+parseInt(doc.data().bfprice)*parseInt(doc.data().bfquantity))
-            
             console.log(total)
             //console.log(total2)
             console.log(doc.data().bfprice)
           });
           
           setProducts([...temp]);
-
-
           }
         }
-    
         readData();
-
       },[db]);
-
       const [deleted,setDeleted]=useState([]);
-      
-
       const deleteData = async function(id){
-
         try{
           const q = query(collection(db,"cart"),where("ctstate", "==", 0),where("useremail","==",user.email));
           const snapshot = await getDocs(query(q) );
@@ -247,7 +212,8 @@ const send = async function(){
   const handleClick = function(e){
     setorderAddress(e.target.value)
   }
-
+  
+ 
     return (
     <Box sx={{
         width: '100vw',maxWidth: 360,
@@ -272,10 +238,7 @@ const send = async function(){
         </IconButton> 
       </ListItem>)}
       <ListItem>
-      <ListItemText>總計：{total}</ListItemText>
-      
-      
-      
+      <ListItemText>金額：{total}</ListItemText>
       <Button variant="contained" endIcon={<SendIcon />} onClick={handleClickOpen}  >
         送出訂單
       </Button>
@@ -284,20 +247,16 @@ const send = async function(){
     </List>
     
     <Dialog open={open} onClose={handleClose}>
-<DialogTitle id="alert-dialog-title">{"新增產品"}
+<DialogTitle id="alert-dialog-title">{"請輸入送達地址"}
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
-你的地址:<Input type="text" name="bfname"  onChange={handleClick}/><br/>
-
-
-<FormHelperText id="outlined-weight-helper-text">請輸入地址</FormHelperText>
-
+地址：<Input type="text" name="bfname"  onChange={handleClick}/><br/>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
-<Button variant="contained" color="primary" onClick={()=>send()}>完成</Button>
-<Button onClick={handleClose}>關閉</Button>
+<Button variant="contained" color="primary" onClick={()=>send()}>送出</Button>
+<Button onClick={handleClose}>取消</Button>
 </DialogActions>
 </Dialog>
 

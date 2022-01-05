@@ -51,7 +51,7 @@ export default function Newpage() {
               });
               //setProductsr([...tempudetail]);
             temp.push({id:doc.id,address:doc.data().address,email:doc.data().email, state:doc.data().state,productsr:tempudetail});
-            setProducts((current)=>[...current,{id:doc.id,address:doc.data().address,email:doc.data().email, state:doc.data().state,productsr:tempudetail} ])
+            setProducts((current)=>[...current,{id:doc.id,address:doc.data().address,email:doc.data().email, cost:doc.data().cost,state:doc.data().state,productsr:tempudetail} ])
           });
           console.log("未完成id:"+tempu);
           console.log(temp);
@@ -103,7 +103,8 @@ export default function Newpage() {
           <Typography>{product.email}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <strong>地址：{product.address}</strong>
+          <strong>地址：{product.address}</strong><br/>
+          <strong>總金額：{product.cost}</strong>
           <Typography>
           {product.productsr.map((buyy, index) => 
             <ListItemText primary={"品項："+buyy.bfname} secondary={"份數："+buyy.bfquantity}></ListItemText>
