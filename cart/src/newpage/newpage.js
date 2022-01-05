@@ -71,7 +71,24 @@ export default function Newpage() {
       });
       Swal.fire({
         icon: 'success',
-        title: '此訂單完成'
+        title: '完成訂單，請重整頁面'
+      })
+    }
+  
+    catch(e){
+      console.log(e);
+    }
+    
+  }
+  const edit2 = async function(id){
+    try{
+      console.log(id);
+      await updateDoc(doc(db,"order",id),{
+        state:2
+      });
+      Swal.fire({
+        icon: 'success',
+        title: '此訂單已取消，請重整頁面'
       })
     }
   
@@ -110,9 +127,12 @@ export default function Newpage() {
             <ListItemText primary={"品項："+buyy.bfname} secondary={"份數："+buyy.bfquantity}></ListItemText>
            
           )}
-          
+          <Stack direction="row" spacing={1}>
           <Button variant="contained" color="success" edge="end" onClick={()=>edit(product.id)}>完成訂單</Button>
+          <Button variant="contained" color="error" edge="end" onClick={()=>edit2(product.id)}>取消訂單</Button>
+          </Stack>
           </Typography>
+          
         </AccordionDetails>
       </Accordion>
       

@@ -18,7 +18,10 @@ import {collectionGroup, getFirestore,collection ,getDocs,doc,setDoc,addDoc, onS
 import { initializeApp } from "firebase/app";
 import {config} from '../settings/firebaseConfig';
 import Swal from 'sweetalert2';
-
+import Alert from '@mui/material/Alert';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Tag } from 'antd-mobile';
 export default function Newpage() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -30,7 +33,7 @@ export default function Newpage() {
         async function readData() {
           setIsLoading(true);
           var citiesRef = collection(db, "order");
-          const q = await getDocs(query(citiesRef, where("state", "==", 1)));
+          const q = await getDocs(query(citiesRef, where("state", "!=", 0)));
           //temp裝未完成訂單user
           const temp = [];
           //tempu裝未完成訂單id
@@ -74,6 +77,28 @@ export default function Newpage() {
   const handleClose = () => {
     setOpen(false);
   };
+  const Erro=function(name){
+    if (name=="1"){
+      return(
+        <Alert severity="success">訂單已成功送出</Alert>
+      );
+    }
+    else{
+      return(
+        <Alert severity="error">訂單已被取消</Alert>
+      );
+    }
+  }
+  const Erro2=function(name){
+    if (name=="2"){
+      return(
+        <Tag round color='danger'>
+          已取消
+        </Tag>
+      );
+    }
+    
+  }
   const Imfor=function(){
     return(
       <Box>
@@ -84,8 +109,9 @@ export default function Newpage() {
           aria-controls="panel1a-content"
           id={index}
         >
-          <Typography>{product.email}</Typography>
+          <Typography>{product.email} {Erro2(product.state)}</Typography>
         </AccordionSummary>
+        {Erro(product.state)}
         <AccordionDetails>
           <strong>地址：{product.address}</strong><br/>
           <strong>總金額：{product.cost}</strong>
@@ -95,7 +121,8 @@ export default function Newpage() {
            
           )}
           
-          <Button variant="contained" color="success" edge="end" disabled>訂單已完成</Button>
+          
+          
           </Typography>
         </AccordionDetails>
       </Accordion>

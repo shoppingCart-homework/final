@@ -22,6 +22,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import FormHelperText from '@mui/material/FormHelperText';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import Tooltip from '@mui/material/Tooltip';
 export default function EmployeeList() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -233,9 +234,12 @@ const send = async function(){
         <button onClick={()=>minus(employee)}>-</button>
         <input id="num" value={employee.bfquantity} size="1"></input>
         <button onClick={()=>plus(employee)}>+</button>
+        <Tooltip title="刪除">
         <IconButton edge="end" onClick={()=>deleteData(employee.id)}>
         <DeleteIcon/>
         </IconButton> 
+        </Tooltip>
+        
       </ListItem>)}
       <ListItem>
       <ListItemText>金額：{total}</ListItemText>
