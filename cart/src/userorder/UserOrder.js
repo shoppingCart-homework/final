@@ -21,6 +21,8 @@ import {config} from '../settings/firebaseConfig';
 import Swal from 'sweetalert2';
 import Alert from '@mui/material/Alert';
 import { Tag } from 'antd-mobile';
+import { Empty } from 'antd-mobile';
+import AddReactionIcon from '@mui/icons-material/AddReaction';
 export default function Newpage() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -47,7 +49,7 @@ export default function Newpage() {
          //q.foreach(doc) => ........
           q.forEach(async (doc) => {
             //訂購人email地址等資訊
-            console.log(doc.id, " => ", doc.data());
+            //console.log(doc.id, " => ", doc.data());
             tempu.push("order/"+doc.id+"/content");
             //console.log("order/"+doc.id+"/content");
             let strr="order/"+doc.id+"/content";
@@ -56,15 +58,15 @@ export default function Newpage() {
             const tempudetail=[];
             querySnapshoti.forEach((docs) => {
               // doc.data() is never undefined for query doc snapshots
-              console.log(docs.id, " => ", docs.data());
+              //console.log(docs.id, " => ", docs.data());
               tempudetail.push({id:docs.id,bfname:docs.data().bfname,bfprice:docs.data().bfprice, bfquantity:docs.data().bfquantity});
               });
               //setProductsr([...tempudetail]);
             temp.push({id:doc.id,address:doc.data().address,email:doc.data().email, state:doc.data().state,productsr:tempudetail});
             setProducts((current)=>[...current,{id:doc.id,address:doc.data().address,email:doc.data().email,cost:doc.data().cost, state:doc.data().state,productsr:tempudetail} ])
           });
-          console.log("未完成id:"+tempu);
-          console.log(temp);
+          //console.log("未完成id:"+tempu);
+          //console.log(temp);
           //setProducts([...temp]);
           setIsLoading(false);
           setstring([...tempu]);
@@ -156,17 +158,40 @@ export default function Newpage() {
       </Box>
     );
   }
-  
-
-    return (
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        <AppMenu/>
-        <List aria-label="employee list"></List>
+  const Emp=function(){
+    if (products==false){
+      return(
+        <Empty
+          style={{ padding: '64px 0' }}
+          image={
+            <AddReactionIcon
+              style={{
+                color: 'var(--adm-color-light)',
+                fontSize: 48,
+              }}
+            />
+          }
+          description='購物紀錄是空的，買點東西吧'
+        />
+      );
+    }
+    else{
+      return(
+        <List aria-label="employee list">
         {!isLoading ?
           <Imfor/>
            :
           <CircularProgress />
         }
+        </List>
+      );
+    }
+  }
+
+    return (
+      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <AppMenu/>
+        <Emp/>
     </Box>
   );
 }
