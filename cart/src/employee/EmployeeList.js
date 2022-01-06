@@ -23,6 +23,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import FormHelperText from '@mui/material/FormHelperText';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Tooltip from '@mui/material/Tooltip';
+import { Empty } from 'antd-mobile';
+import AddReactionIcon from '@mui/icons-material/AddReaction';
+
 export default function EmployeeList() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -213,19 +216,26 @@ const send = async function(){
   const handleClick = function(e){
     setorderAddress(e.target.value)
   }
-  
- 
-    return (
-    <Box sx={{
-        width: '100vw',maxWidth: 360,
-        height: '100vh',
-        backgroundColor: 'background.paper',
-        color: 'black',
-        textAlign: 'left'
-    }} >
-    <AppMenu/>
-  
-    <List aria-label="employee list">
+  const Emp=function(){
+    if (employees==false){
+      return(
+        <Empty
+          style={{ padding: '64px 0' }}
+          image={
+            <AddReactionIcon
+              style={{
+                color: 'var(--adm-color-light)',
+                fontSize: 48,
+              }}
+            />
+          }
+          description='購物車是空的'
+        />
+      );
+    }
+    else{
+      return(
+        <List aria-label="employee list">
     {employees.map((employee, index) => 
       <ListItem divider key={index} onClick={()=>handleListItemClick(index)} selected={selectedIndex === index}>
 
@@ -249,6 +259,21 @@ const send = async function(){
       </ListItem>
 
     </List>
+      );
+    }
+  }
+ 
+    return (
+    <Box sx={{
+        width: '100vw',maxWidth: 360,
+        height: '100vh',
+        backgroundColor: 'background.paper',
+        color: 'black',
+        textAlign: 'left'
+    }} >
+    <AppMenu/>
+  
+    <Emp/>
     
     <Dialog open={open} onClose={handleClose}>
 <DialogTitle id="alert-dialog-title">{"請輸入送達地址"}
