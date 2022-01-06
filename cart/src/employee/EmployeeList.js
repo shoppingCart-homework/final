@@ -229,7 +229,7 @@ const send = async function(){
               }}
             />
           }
-          description='購物車是空的'
+          description='購物車是空的，加一些東西進去吧'
         />
       );
     }
