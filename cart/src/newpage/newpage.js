@@ -21,6 +21,9 @@ import Swal from 'sweetalert2';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Empty } from 'antd-mobile';
+import AddReactionIcon from '@mui/icons-material/RemoveShoppingCart';
+
 export default function Newpage() {
   const firebaseApp = initializeApp(config);
   const db = getFirestore();
@@ -110,6 +113,29 @@ export default function Newpage() {
   const handleClose = () => {
     setOpen(false);
   };
+  const Emp=function(){
+    if (products==false){
+      return(
+        <Empty
+          style={{ padding: '64px 0' }}
+          image={
+            <AddReactionIcon
+              style={{
+                color: 'var(--adm-color-light)',
+                fontSize: 48,
+              }}
+            />
+          }
+          description='現在沒有任何訂單'
+        />
+      );
+    }
+    else{
+      return(
+        <Imfor />
+      );
+    }
+  }
   const Imfor=function(){
     return(
       <Box>
@@ -149,7 +175,7 @@ export default function Newpage() {
         <AppMenu/>
         <List aria-label="employee list"></List>
         {!isLoading ?
-          <Imfor/>
+          <Emp/>
            :
           <CircularProgress />
         }
